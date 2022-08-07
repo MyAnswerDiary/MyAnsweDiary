@@ -1,0 +1,35 @@
+<form action="" method="POST">
+    {% csrf_token %}
+    <!--현재 날짜-->
+    <div>
+        <script>
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+    
+        today = yyyy+ '.' + mm + '.' + dd ;
+        document.write(today)
+        </script>
+    </div>
+
+    <!--해시태그-->
+    <div>
+        <label></label><input type = "radio" name = "hashtag" value = "기쁨">기쁨</label>
+        <label></label><input type = "radio" name = "hashtag" value = "분노">분노</label>
+        <label></label><input type = "radio" name = "hashtag" value = "우울">우울</label>
+        <label></label><input type = "radio" name = "hashtag" value = "즐거움">즐거움</label>
+    </div>
+
+    <!--제목-->
+    <div>
+        <input type="text" id="title" name="title" placeholder="제목" required>
+    </div>
+
+    <!--내용-->
+    <div>
+        <input type="text" id="content" name="content" placeholder="내용을 입력하세요." required>
+    </div>
+
+    <input type="submit" value="등록">
+</form>
