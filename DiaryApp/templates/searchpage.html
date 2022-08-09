@@ -1,0 +1,6 @@
+<p>검색 페이지</p>
+<form action="{% url 'search' %}" method="GET">
+    {% csrf_token %}
+    <button type="submit">검색</button>
+    <input type="search" placeholder="검색어를 입력하세요" name="kw">
+</form>
