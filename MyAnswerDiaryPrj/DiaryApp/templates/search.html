@@ -1,0 +1,18 @@
+<p>"{{ keyword }}" 검색 결과</p>
+<form action="{% url 'search' %}" method="GET">
+    {% csrf_token %}
+    <button type="submit">검색</button>
+    <input type="search" placeholder="검색어를 입력하세요" name="kw">
+</form>
+
+{% if not diarys %}
+검색 결과가 없습니다.
+{% else %}
+{% for diary in diarys %}
+<div style="cursor: pointer;" onclick="location.href='{% url 'detail' diary.id %}'">
+<p>{{ diary.created_at }}</p>
+<h2>{{ diary.title }}</h2>
+<p>{{ diary.content | truncatewords:25 }}</p>
+</div>
+{% endfor %}
+{% endif %}

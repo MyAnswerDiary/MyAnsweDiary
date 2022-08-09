@@ -13,4 +13,7 @@ urlpatterns = [
     path('logout/', ac_views.logout, name='logout'),
     path('signup/', ac_views.signup, name='signup'),
     path('create_diary/',diary_views.createDiary, name='create_diary'),
+    path('serachpage/', views.searchpage, name='searchpage'),
+    path('search/', views.search, name='search'),
+    path('detail/<int:diary_id>/', views.detail, name='detail'),
 ]
