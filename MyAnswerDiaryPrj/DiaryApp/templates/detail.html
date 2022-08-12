@@ -6,6 +6,7 @@
 같은 날짜에 적힌 일기가 없습니다.
 {% else %}
     {% for detail_diary in detail_diarys %}
+    <p>_________________________________________________________________</p>
     <div style="cursor: pointer;" onclick="location.href='{% url 'detail' detail_diary.id %}'">
         {% for i in yearGap %}
             {% if forloop.counter == detail_diary.id %}
@@ -19,7 +20,6 @@
     <p>{{ detail_diary.created_at }}</p>
     <h2>{{ detail_diary.title }}</h2>
     <p>{{ detail_diary.content | truncatewords:25 }}</p>
-    <p>_________________________________________________________________</p>
     </div>
     {% endfor %}
 {% endif %}
