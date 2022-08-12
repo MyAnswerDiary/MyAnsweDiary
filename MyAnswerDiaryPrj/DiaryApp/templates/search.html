@@ -10,6 +10,8 @@
 {% else %}
 {% for diary in diarys %}
 <div style="cursor: pointer;" onclick="location.href='{% url 'detail' diary.id %}'">
+<!-- <p>{{ yearGap }}년 전</p> -->
+<p>_________________________________________________________________</p>
 <p>{{ diary.created_at }}</p>
 <h2>{{ diary.title }}</h2>
 <p>{{ diary.content | truncatewords:25 }}</p>

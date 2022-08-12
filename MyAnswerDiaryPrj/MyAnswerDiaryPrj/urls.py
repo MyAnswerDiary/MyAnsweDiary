@@ -7,13 +7,13 @@ from DiaryApp import views as diary_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-
     path('', views.main, name='main'),
     path('login/', ac_views.login, name='login'),
     path('logout/', ac_views.logout, name='logout'),
     path('signup/', ac_views.signup, name='signup'),
     path('create_diary/',diary_views.createDiary, name='create_diary'),
-    path('serachpage/', views.searchpage, name='searchpage'),
+    path('searchpage/', views.searchpage, name='searchpage'),
     path('search/', views.search, name='search'),
+    path('qa365/', views.qa365, name='qa365'),
     path('detail/<int:diary_id>/', views.detail, name='detail'),
 ]
