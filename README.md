@@ -17,6 +17,30 @@
 - 벡엔드 : 김민희, 양성원, 윤수윤</br>
 
 
+## Manual
+
+1️⃣ Git Clone </br>
+
+```
+$ git clone https://github.com/MyAnswerDiary/MyAnswerDiary.git
+```
+
+2️⃣ 가상환경 실행하기
+```
+$ source myvenv/Scripts/activate
+```
+
+3️⃣ 프로젝트로 폴더 이동
+
+```
+$ cd MyAnswerDiaryPrj/
+```
+4️⃣ 서버 실행
+```
+$ python manage.py runserver
+```
+
+
 ## 주요 기능
 
 ### 😶 로그인 전 메인화면
@@ -63,26 +87,3 @@
 매년 같은 날짜에 같은 질문이 주어져 매년 달라지는 자신의 답변 상태를 통해 자신에 대해 더 깊이 알아갈 수 있습니다.
 ![24 qna html](https://user-images.githubusercontent.com/86403488/184384629-1a3b5936-cfd2-43d3-adf1-934e2b80abb0.png)
 
-
-## Manual
-
-1️⃣ Git Clone </br>
-
-```
-$ git clone https://github.com/MyAnswerDiary/MyAnswerDiary.git
-```
-
-2️⃣ 가상환경 실행하기
-```
-$ source myvenv/Scripts/activate
-```
-
-3️⃣ 프로젝트로 폴더 이동
-
-```
-$ cd MyAnswerDiaryPrj/
-```
-4️⃣ 서버 실행
-```
-$ python manage.py runserver
-```
