@@ -11,7 +11,31 @@ import datetime
 from datetime import date
 
 def main(request):
-    return render(request, 'main.html')
+    todayYear = date.today().year
+    todayMonth = datetime.date.today().month
+    todayDay = datetime.date.today().day
+    diaryYear = []
+    diaryMonth = []
+    diaryDay = []
+    yearGap = []
+    diarys = Diary.objects.all()
+    count = 0;
+    
+    for diary in diarys:
+        diaryYear.append(diary.created_at.year)
+        diaryMonth.append(diary.created_at.month)
+        diaryDay.append(diary.created_at.day)
+        count += 1  
+    # return render(request, 'main.html', {'todayYear':todayYear, 'todayMonth':todayMonth, 'todayDay':todayDay})
+
+    for i in range(count):
+        today_diarys = diarys.order_by('-created_at').filter(
+            Q(created_at__month=todayMonth), 
+            Q(created_at__day=todayDay),
+            user=request.user
+        ).distinct()
+        yearGap.append(todayYear - diaryYear[i])
+    return render(request, 'main.html', {'diarys':diarys, 'today_diarys':today_diarys, 'todayYear':todayYear, 'todayMonth':todayMonth, 'todayDay':todayDay, 'yearGap':yearGap})
 
 def createDiary(request):
 
@@ -39,6 +63,9 @@ def searchpage(request):
 def qa365(request):
     return render(request, 'qa365.html')
     
+def mood_graph(request):
+    return render(request, 'mood_graph.html')
+
 def search(request):
     if 'kw' in request.GET:
         keyword = request.GET.get('kw')
@@ -65,6 +92,7 @@ def detail(request, diary_id):
         diaryMonth.append(diary.created_at.month)
         diaryDay.append(diary.created_at.day)
         count += 1
+
     # detail_day : 상세페이지 메인 일기(클릭한 일기)
     # diaryDay : 상세페이지 리스트 일기(클릭한 일기와 같은 날짜에 쓰여진 일기들)
     if diary_detail.user == request.user:
@@ -81,34 +109,6 @@ def detail(request, diary_id):
                     user=request.user
                 ).distinct()
             yearGap.append(diaryYear[i] - detail_year);
-            # yearGap[i].append(detail_year - detail_diarys[i].year)
-        return render(request, 'detail.html', {'diary_detail':diary_detail, 'detail_diarys':detail_diarys, 'yearGap':yearGap, 'count':0})
+        return render(request, 'detail.html', {'diary_detail':diary_detail, 'detail_diarys':detail_diarys, 'yearGap':yearGap})
     else:
-        return render(request, 'bad_detail.html') # 사용자가 다른 유저의 본문을 보지 못하게 함
-
-def mainList(request):
-    todayYear = date.today().year
-    todayMonth = datetime.date.today().month
-    todayDay = datetime.date.today().day
-    diaryYear = []
-    diaryMonth = []
-    diaryDay = []
-    yearGap = []
-    diarys = Diary.objects.all()
-    count = 0;
-    
-    for diary in diarys:
-        diaryYear.append(diary.created_at.year)
-        diaryMonth.append(diary.created_at.month)
-        diaryDay.append(diary.created_at.day)
-        count += 1
-        
-    for i in range(count):
-        if (diaryMonth[i]==todayMonth and diaryDay[i]==todayDay): 
-            today_diarys = diarys.order_by('-created_at').filter(
-                user=request.user
-            ).distinct()
-            yearGap.append(todayYear - diaryYear[i])
-            return render(request, 'test.html', {'diarys':diarys, 'today_diarys':today_diarys, 'yearGap':yearGap})
-        else:
-            return render(request, 'main.html')
+        return render(request, 'bad_detail.html')

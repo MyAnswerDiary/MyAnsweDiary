@@ -12,6 +12,29 @@
 <a href="{% url 'create_diary' %}">일기쓰기</a>
 <a href="{% url 'searchpage' %}">기록 검색</a>
 <a href="{% url 'qa365' %}">365 Q&A</a>
+<br/><br/>
+<p>{{ user.first_name }}님의 지난 {{ todayMonth }}월 {{ todayDay }}일 기록들입니다.</p>
+    {% if not today_diarys %}
+    같은 날짜에 적힌 일기가 없습니다.
+    {% else %}
+        {% for today_diary in today_diarys %}
+        <p>_________________________________________________________________</p>
+        <div style="cursor: pointer;" onclick="location.href='{% url 'detail' today_diary.id %}'">
+            {% for i in yearGap %}
+                {% if forloop.counter == today_diary.id %}
+                    {% if i != 0 %}
+                        <p>{{ i }}년 전</p>
+                    {% else %}
+                        <p>올해의 일기</p>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        <p>{{ today_diary.created_at }}</p>
+        <h2>{{ today_diary.title }}</h2>
+        <p>{{ today_diary.content | truncatewords:25 }}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
 
 {% else %}
 <h1>로그인 전 Main 화면입니다.</h1>
