@@ -28,14 +28,16 @@ def main(request):
         count += 1  
     # return render(request, 'main.html', {'todayYear':todayYear, 'todayMonth':todayMonth, 'todayDay':todayDay})
 
-    for i in range(count):
-        today_diarys = diarys.order_by('-created_at').filter(
-            Q(created_at__month=todayMonth), 
-            Q(created_at__day=todayDay),
-            user=request.user
-        ).distinct()
-        yearGap.append(todayYear - diaryYear[i])
-    return render(request, 'main.html', {'diarys':diarys, 'today_diarys':today_diarys, 'todayYear':todayYear, 'todayMonth':todayMonth, 'todayDay':todayDay, 'yearGap':yearGap})
+    if request.user.is_authenticated:
+        for i in range(count):
+            today_diarys = diarys.order_by('-created_at').filter(
+                Q(created_at__month=todayMonth), 
+                Q(created_at__day=todayDay),
+                user=request.user
+            ).distinct()
+            yearGap.append(todayYear - diaryYear[i])
+        return render(request, 'main.html', {'diarys':diarys, 'today_diarys':today_diarys, 'todayYear':todayYear, 'todayMonth':todayMonth, 'todayDay':todayDay, 'yearGap':yearGap})
+    return render(request, 'main.html')
 
 def createDiary(request):
 
