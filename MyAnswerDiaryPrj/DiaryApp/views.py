@@ -1,9 +1,14 @@
+from ast import keyword
 from distutils.log import Log
+from this import d
+from tkinter import Y
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils import timezone
 
 from .models import Diary
 from django.db.models import Q
+import datetime
+from datetime import date
 
 def main(request):
     return render(request, 'main.html')
@@ -31,6 +36,9 @@ def createDiary(request):
 def searchpage(request):
     return render(request, 'searchpage.html')
 
+def qa365(request):
+    return render(request, 'qa365.html')
+    
 def search(request):
     if 'kw' in request.GET:
         keyword = request.GET.get('kw')
@@ -46,7 +54,61 @@ def search(request):
 
 def detail(request, diary_id):
     diary_detail = get_object_or_404(Diary, pk=diary_id)
+    diaryYear = []
+    diaryMonth = []
+    diaryDay = []
+    yearGap = []
+    count = 0
+    diarys = Diary.objects.all()
+    for diary in diarys:
+        diaryYear.append(diary.created_at.year)
+        diaryMonth.append(diary.created_at.month)
+        diaryDay.append(diary.created_at.day)
+        count += 1
+    # detail_day : 상세페이지 메인 일기(클릭한 일기)
+    # diaryDay : 상세페이지 리스트 일기(클릭한 일기와 같은 날짜에 쓰여진 일기들)
     if diary_detail.user == request.user:
-        return render(request, 'detail.html', {'diary_detail':diary_detail})
+        detail_at = diarys[diary_id - 1].created_at
+        detail_year = diarys[diary_id - 1].created_at.year
+        detail_month = diarys[diary_id - 1].created_at.month
+        detail_day = diarys[diary_id - 1].created_at.day
+        
+        for i in range(count):
+            detail_diarys = Diary.objects.all().order_by('-created_at').filter(
+                    Q(created_at__month=detail_month), 
+                    Q(created_at__day=detail_day),
+                    ~Q(created_at=detail_at), #클릭한 일기와 같은 글은 제외
+                    user=request.user
+                ).distinct()
+            yearGap.append(diaryYear[i] - detail_year);
+            # yearGap[i].append(detail_year - detail_diarys[i].year)
+        return render(request, 'detail.html', {'diary_detail':diary_detail, 'detail_diarys':detail_diarys, 'yearGap':yearGap, 'count':0})
     else:
         return render(request, 'bad_detail.html') # 사용자가 다른 유저의 본문을 보지 못하게 함
+
+def mainList(request):
+    todayYear = date.today().year
+    todayMonth = datetime.date.today().month
+    todayDay = datetime.date.today().day
+    diaryYear = []
+    diaryMonth = []
+    diaryDay = []
+    yearGap = []
+    diarys = Diary.objects.all()
+    count = 0;
+    
+    for diary in diarys:
+        diaryYear.append(diary.created_at.year)
+        diaryMonth.append(diary.created_at.month)
+        diaryDay.append(diary.created_at.day)
+        count += 1
+        
+    for i in range(count):
+        if (diaryMonth[i]==todayMonth and diaryDay[i]==todayDay): 
+            today_diarys = diarys.order_by('-created_at').filter(
+                user=request.user
+            ).distinct()
+            yearGap.append(todayYear - diaryYear[i])
+            return render(request, 'test.html', {'diarys':diarys, 'today_diarys':today_diarys, 'yearGap':yearGap})
+        else:
+            return render(request, 'main.html')

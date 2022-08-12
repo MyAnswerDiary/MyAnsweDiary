@@ -1,3 +1,25 @@
 <h1>{{ diary_detail.title }}</h1>
 <p>{{ diary_detail.created_at }}</p>
 <p>{{ diary_detail.content }}</p>
+<p>=======================================</p>
+{% if not detail_diarys %}
+같은 날짜에 적힌 일기가 없습니다.
+{% else %}
+    {% for detail_diary in detail_diarys %}
+    <div style="cursor: pointer;" onclick="location.href='{% url 'detail' detail_diary.id %}'">
+        {% for i in yearGap %}
+            {% if forloop.counter == detail_diary.id %}
+                {% if i != 0 %}
+                    <p>{{ i }}년 전</p>
+                {% else %}
+                    <p>올해의 일기</p>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    <p>{{ detail_diary.created_at }}</p>
+    <h2>{{ detail_diary.title }}</h2>
+    <p>{{ detail_diary.content | truncatewords:25 }}</p>
+    <p>_________________________________________________________________</p>
+    </div>
+    {% endfor %}
+{% endif %}
