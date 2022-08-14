@@ -7,7 +7,6 @@ from django.utils import timezone
 
 from .models import Diary, Question365
 from django.db.models import Q
-from datetime import datetime
 from datetime import date
 import datetime
 
@@ -64,7 +63,7 @@ def searchpage(request):
     return render(request, 'searchpage.html')
 
 def qa365(request):
-    nowday = datetime.now().day # 현재 일(day)
+    nowday = datetime.datetime.now().day # 현재 일(day)
     if (nowday%5 == 0):
         nownum = 5
     else:
