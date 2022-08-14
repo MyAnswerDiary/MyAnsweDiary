@@ -9,6 +9,7 @@ from .models import Diary, Question365
 from django.db.models import Q
 from datetime import datetime
 from datetime import date
+import datetime
 
 def main(request):
     todayYear = date.today().year
