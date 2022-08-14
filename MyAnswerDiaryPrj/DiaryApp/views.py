@@ -5,9 +5,9 @@ from tkinter import Y
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils import timezone
 
-from .models import Diary
+from .models import Diary, Question365
 from django.db.models import Q
-import datetime
+from datetime import datetime
 from datetime import date
 
 def main(request):
@@ -63,7 +63,13 @@ def searchpage(request):
     return render(request, 'searchpage.html')
 
 def qa365(request):
-    return render(request, 'qa365.html')
+    nowday = datetime.now().day # 현재 일(day)
+    if (nowday%5 == 0):
+        nownum = 5
+    else:
+        nownum = nowday % 5
+    ques = Question365.objects.filter(num=nownum)
+    return render(request, 'qa365.html', {'ques':ques})
     
 def mood_graph(request):
     return render(request, 'mood_graph.html')

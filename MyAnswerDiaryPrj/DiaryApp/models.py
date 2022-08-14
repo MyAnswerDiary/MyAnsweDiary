@@ -1,3 +1,4 @@
+from re import M
 from django.db import models
 from django.forms import DateTimeField
 from django.conf import settings
@@ -14,3 +15,11 @@ class Diary(models.Model):
     
     def __str__(self):
         return self.title
+
+class Question365(models.Model):
+    question = models.TextField(max_length=60) # 질문
+    category = models.CharField(max_length=10) # 카테고리
+    num = models.IntegerField() # 질문 숫자
+
+    def __str__(self):
+        return self.question

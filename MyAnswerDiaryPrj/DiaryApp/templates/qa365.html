@@ -1,1 +1,94 @@
 <h1>365 Q&A 페이지</h1>
+
+<p>카테고리를 선택하면 관련 질문이 랜덤하게 나옵니다.</p>
+
+<div>
+    <input type='button' value='자기계발' id='btn1' onclick='Btn_imp()' />
+    <input type='button' value='꿈' id='btn2' onclick='Btn_dre()' />
+    <input type='button' value='인간관계' id='btn3' onclick='Btn_rel()' />
+    <input type='button' value='가치관' id='btn4' onclick='Btn_val()' />
+    <input type='button' value='기타' id='btn5' onclick='Btn_etc()' />
+</div>
+
+{% for que in ques %}
+<div>
+    {% if que.category == '자기계발' %}
+    <p id="imp" style="display: none;">{{ que.question }}</p>
+    {% elif que.category == '꿈' %}
+    <p id="dre" style="display: none;">{{ que.question }}</p>
+    {% elif que.category == '인간관계' %}
+    <p id="rel" style="display: none;">{{ que.question }}</p>
+    {% elif que.category == '가치관' %}
+    <p id="val" style="display: none;">{{ que.question }}</p>
+    {% elif que.category == '기타' %}
+    <p id="etc" style="display: none;">{{ que.question }}</p>
+    {% endif %}
+</div>
+{% endfor %}
+
+<script>
+    const imp = document.getElementById('imp');
+    const dre = document.getElementById('dre');
+    function Btn_imp() {
+
+        if (imp.style.display !== 'none') {
+            imp.style.display = 'none';
+        }
+        else {
+            imp.style.display = 'block';
+            dre.style.display = 'none';
+            rel.style.display = 'none';
+            val.style.display = 'none';
+            etc.style.display = 'none';
+        }
+    }
+    function Btn_dre() {
+        if (dre.style.display !== 'none') {
+            dre.style.display = 'none';
+        }
+        else {
+            dre.style.display = 'block';
+            imp.style.display = 'none';
+            rel.style.display = 'none';
+            val.style.display = 'none';
+            etc.style.display = 'none';
+        }
+    }
+    function Btn_rel() {
+        if (rel.style.display !== 'none') {
+            rel.style.display = 'none';
+        }
+        else {
+            rel.style.display = 'block';
+            imp.style.display = 'none';
+            dre.style.display = 'none';
+            val.style.display = 'none';
+            etc.style.display = 'none';
+        }
+    }
+    function Btn_val() {
+        if (val.style.display !== 'none') {
+            val.style.display = 'none';
+        }
+        else {
+            val.style.display = 'block';
+            imp.style.display = 'none';
+            dre.style.display = 'none';
+            rel.style.display = 'none';
+            etc.style.display = 'none';
+        }
+    }
+    function Btn_etc() {
+        if (etc.style.display !== 'none') {
+            etc.style.display = 'none';
+        }
+        else {
+            etc.style.display = 'block';
+            imp.style.display = 'none';
+            dre.style.display = 'none';
+            rel.style.display = 'none';
+            val.style.display = 'none';
+        }
+    }
+
+</script>
