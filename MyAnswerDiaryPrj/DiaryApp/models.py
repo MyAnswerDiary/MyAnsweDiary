@@ -23,3 +23,11 @@ class Question365(models.Model):
 
     def __str__(self):
         return self.question
+
+class Answer365(models.Model):
+    answer = models.TextField(max_length = 200) # 답변
+    created_at = models.DateTimeField(auto_now=True) #생성일자
+    question = models.ForeignKey(Question365, on_delete=models.CASCADE) #fk(질문)
+
+    def __str__(self):
+        return self.answer

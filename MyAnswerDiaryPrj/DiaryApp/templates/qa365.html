@@ -1,3 +1,6 @@
+<!-- que를 form으로 넘겨서 저장하기 위해 여기서부터 form 태그를 넣음-->
+<form action="{% url 'qa365' %}" method="POST" name="answer_form" > 
+{% csrf_token %}
 <h1>365 Q&A 페이지</h1>
 
 <p>카테고리를 선택하면 관련 질문이 랜덤하게 나옵니다.</p>
@@ -22,13 +25,28 @@
     <p id="val" style="display: none;">{{ que.question }}</p>
     {% elif que.category == '기타' %}
     <p id="etc" style="display: none;">{{ que.question }}</p>
+    
     {% endif %}
 </div>
 {% endfor %}
 
+
+{{todayYear}}년 {{todayMonth}}월 {{todayDay}}일 {{ user.first_name }}님의 생각을 기록해주세요.
+
+
+<div>
+    <input type="text" id="answer" name="answer" placeholder="내용을 입력하세요." required>
+    <input type = "hidden" id="que" name= "que" value="">
+    <input type= "button" name="dd" value="submit" onclick=answer_form.submit();> 
+</div>
+
+
+</form>
+
 <script>
     const imp = document.getElementById('imp');
     const dre = document.getElementById('dre');
+    var choose ;
     function Btn_imp() {
 
         if (imp.style.display !== 'none') {
@@ -40,6 +58,8 @@
             rel.style.display = 'none';
             val.style.display = 'none';
             etc.style.display = 'none';
+            choose = imp.textContent;
+            document.getElementById("que").value = choose;
         }
     }
     function Btn_dre() {
@@ -52,6 +72,8 @@
             rel.style.display = 'none';
             val.style.display = 'none';
             etc.style.display = 'none';
+            choose = dre.textContent;
+            document.getElementById("que").value = choose;
         }
     }
     function Btn_rel() {
@@ -64,11 +86,14 @@
             dre.style.display = 'none';
             val.style.display = 'none';
             etc.style.display = 'none';
+            choose = rel.textContent;
+            document.getElementById("que").value = choose;
         }
     }
     function Btn_val() {
         if (val.style.display !== 'none') {
             val.style.display = 'none';
+
         }
         else {
             val.style.display = 'block';
@@ -76,6 +101,8 @@
             dre.style.display = 'none';
             rel.style.display = 'none';
             etc.style.display = 'none';
+            choose = val.textContent;
+            document.getElementById("que").value = choose;
         }
     }
     function Btn_etc() {
@@ -88,7 +115,10 @@
             dre.style.display = 'none';
             rel.style.display = 'none';
             val.style.display = 'none';
+            choose = etc.textContent;
+            document.getElementById("que").value = choose;
         }
     }
+
 
 </script>

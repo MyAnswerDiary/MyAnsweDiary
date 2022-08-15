@@ -5,7 +5,7 @@ from tkinter import Y
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils import timezone
 
-from .models import Diary, Question365
+from .models import Answer365, Diary, Question365
 from django.db.models import Q
 from datetime import date, timedelta
 import datetime
@@ -113,7 +113,7 @@ def mood_graph(request):
         return render(request, 'mood_graph.html', {'joyPercent':joyPercent, 'angerPercent':angerPercent, 'depressionPercent':depressionPercent, 'pleasurePercent':pleasurePercent, 
         'startYear':startYear, 'startMonth':startMonth , 'startDay': startDay, 'endYear' : endYear, 'endMonth' : endMonth, 'endDay': endDay })
             
-    # 검색 결과       
+    # 특정 기간 입력 후 검색 결과       
     if(request.method == "POST") : 
 
         if request.user.is_authenticated :
@@ -178,13 +178,41 @@ def searchpage(request):
     return render(request, 'searchpage.html')
 
 def qa365(request):
-    nowday = datetime.datetime.now().day # 현재 일(day)
-    if (nowday%5 == 0):
-        nownum = 5
-    else:
-        nownum = nowday % 5
-    ques = Question365.objects.filter(num=nownum)
-    return render(request, 'qa365.html', {'ques':ques})
+    if request.method == 'GET':
+        print("get요청임")
+        nowday = datetime.datetime.now().day # 현재 일(day)
+        if (nowday%5 == 0):
+            nownum = 5
+        else:
+            nownum = nowday % 5
+        ques = Question365.objects.filter(num=nownum)
+
+        # 현재 날짜(년, 월, 일)
+        todayYear = date.today().year
+        todayMonth = datetime.date.today().month
+        todayDay = datetime.date.today().day
+
+        return render(request, 'qa365.html', {'ques':ques , 'todayYear': todayYear, 'todayMonth' : todayMonth, 'todayDay' : todayDay})
+
+    if request.method == 'POST':
+        
+        if request.user.is_authenticated:
+            answer = Answer365()
+            answer.answer = request.POST['answer']
+            answer.created_at = timezone.now()
+
+            #pk가 없어서 질문 문자열 값을 통해 question 객체 조회
+            question = Question365.objects.get(question = request.POST['que'])
+
+            #question을 fk로 저장
+            answer.question = question
+
+            answer.save()
+
+            return redirect('main') #일단 main으로 가도록 해놨습니다
+            
+        else :
+            return redirect('main') #로그인 되어있지 않으면 main으로 redirect
     
 
 def search(request):
