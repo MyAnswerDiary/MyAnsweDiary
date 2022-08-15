@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from .models import Diary, Question365
 from django.db.models import Q
-from datetime import date
+from datetime import date, timedelta
 import datetime
 
 def main(request):
@@ -38,6 +38,121 @@ def main(request):
             yearGap.append(todayYear - diaryYear[i])
         return render(request, 'main.html', {'today_diarys':today_diarys, 'todayYear':todayYear, 'todayMonth':todayMonth, 'todayDay':todayDay, 'yearGap':yearGap})
     return render(request, 'main.html')
+
+def mood_graph(request):
+
+    # 현재 날짜(년, 월, 일)
+    todayYear = date.today().year
+    todayMonth = datetime.date.today().month
+    todayDay = datetime.date.today().day
+
+    startYear = todayYear -1
+    startMonth = todayMonth
+    startDay = todayDay
+
+    endYear = todayYear
+    endMonth = todayMonth
+    endDay = todayDay
+
+    #해시태그 개수
+    joy = 0
+    anger = 0
+    depression = 0
+    pleasure = 0
+
+    #현재 날짜 ~ 1년전 날짜 사이의 일기 데이터 조회 (아무것도 입력 하지 않았을 때)
+    todayDiarys2 = Diary.objects.filter(created_at__range = [date.today()-timedelta(days=365),date.today()]).values().all()
+
+    print(todayDiarys2)
+    for todayDiary in todayDiarys2 :
+        if todayDiary.get('hashTag') == "기쁨" :
+            joy = joy + 1
+        
+        if todayDiary.get('hashTag') == "분노" :
+            anger= anger + 1
+
+        if todayDiary.get('hashTag') == "우울" :
+            depression = depression + 1
+        
+        if todayDiary.get('hashTag') == "즐거움" :
+            pleasure = pleasure + 1
+
+    # 퍼센트 구하기
+    total = joy+anger+depression+pleasure
+    joyPercent = joy / total * 100
+    angerPercent = anger / total * 100
+    depressionPercent = depression / total * 100
+    pleasurePercent = pleasure / total * 100
+
+    if(request.method =="GET") :
+        if request.user.is_authenticated :
+            #현재 날짜 ~ 1년전 날짜 사이의 일기 데이터 조회 (아무것도 입력 하지 않았을 때)
+            todayDiarys2 = Diary.objects.filter(created_at__range = [date.today()-timedelta(days=365),date.today()]).values().all()
+
+            for todayDiary in todayDiarys2 :
+                if todayDiary.get('hashTag') == "기쁨" :
+                    joy = joy + 1
+        
+                if todayDiary.get('hashTag') == "분노" :
+                    anger= anger + 1
+
+                if todayDiary.get('hashTag') == "우울" :
+                    depression = depression + 1
+        
+                if todayDiary.get('hashTag') == "즐거움" :
+                    pleasure = pleasure + 1
+
+            # 퍼센트 구하기
+            total = joy+anger+depression+pleasure
+            joyPercent = joy / total * 100
+            angerPercent = anger / total * 100
+            depressionPercent = depression / total * 100
+            pleasurePercent = pleasure / total * 100
+
+
+        return render(request, 'mood_graph.html', {'joyPercent':joyPercent, 'angerPercent':angerPercent, 'depressionPercent':depressionPercent, 'pleasurePercent':pleasurePercent, 
+        'startYear':startYear, 'startMonth':startMonth , 'startDay': startDay, 'endYear' : endYear, 'endMonth' : endMonth, 'endDay': endDay })
+            
+    # 검색 결과       
+    if(request.method == "POST") : 
+
+        if request.user.is_authenticated :
+            startYear = int(request.POST['startYear'])
+            startMonth = int(request.POST['startMonth'])
+            startDay = int(request.POST['startDay'])
+
+            endYear = int(request.POST['endYear'])
+            endMonth = int(request.POST['endMonth'])
+            endDay = int(request.POST['endDay'])
+
+            start_date = datetime.date(startYear,startMonth,startDay)
+            end_date = datetime.date(endYear,endMonth,endDay)
+
+            searchDiarys = Diary.objects.filter(created_at__range=(start_date,end_date)).values().all()
+            print("검색 일기",searchDiarys)
+
+            for searchDiary in searchDiarys :
+                if searchDiary.get('hashTag') == "기쁨" :
+                    joy = joy + 1
+        
+                if searchDiary.get('hashTag') == "분노" :
+                    anger= anger + 1
+
+                if searchDiary.get('hashTag') == "우울" :
+                    depression = depression + 1
+        
+                if searchDiary.get('hashTag') == "즐거움" :
+                    pleasure = pleasure + 1
+
+            # 퍼센트 구하기
+            total = joy+anger+depression+pleasure
+            joyPercent = joy / total * 100
+            angerPercent = anger / total * 100
+            depressionPercent = depression / total * 100
+            pleasurePercent = pleasure / total * 100
+
+        return render(request, 'mood_graph.html', {'joyPercent':joyPercent, 'angerPercent':angerPercent, 'depressionPercent':depressionPercent, 'pleasurePercent':pleasurePercent, 
+        'startYear':startYear, 'startMonth':startMonth , 'startDay': startDay, 'endYear' : endYear, 'endMonth' : endMonth, 'endDay': endDay })
 
 def createDiary(request):
 
@@ -71,8 +186,6 @@ def qa365(request):
     ques = Question365.objects.filter(num=nownum)
     return render(request, 'qa365.html', {'ques':ques})
     
-def mood_graph(request):
-    return render(request, 'mood_graph.html')
 
 def search(request):
     if 'kw' in request.GET:

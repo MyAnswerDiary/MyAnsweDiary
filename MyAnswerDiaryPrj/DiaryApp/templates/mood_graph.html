@@ -1,1 +1,46 @@
-<h1>감정통계 그래프</h1>
+{% if user.is_authenticated %}
+
+
+    <br/>
+    <a href="{% url 'logout' %}">로그아웃</a>
+    <a href="{% url 'searchpage' %}">기록 검색</a>
+    <a href="{% url 'create_diary' %}">일기쓰기</a>
+    <a href="{% url 'qa365' %}">365 Q&A</a>
+    <br/><br/>
+
+
+    <form action="" method="POST">
+        {% csrf_token %}
+    
+        <!--시작 ~ 끝-->
+        <div>
+            <input type ="startYear" id = "startYear" name = "startYear">년
+            <input type ="startMonth" id = "startMonth" name = "startMonth">월
+            <input type ="startDay" id = "startDay" name = "startDay">일
+            ~
+            <input type ="endYear" id = "endYear" name = "endYear">년
+            <input type ="endMonth" id = "endMonth" name = "endMonth">월
+            <input type ="endDay" id = "endDay" name = "endDay">일
+
+        </div>
+        <input type="submit" value="검색">
+    </form>
+    
+
+    <div>
+        
+        {{startYear}}년 {{startMonth}}월 {{startDay}}일 ~ {{endYear}}년 {{endMonth}}월 {{endDay}}일 
+       {{user.first_name}}님의 감정 통계입니다.
+
+    </div>
+    <h4>기쁨</h4> {{ joyPercent }}
+    <h4>분노</h4> {{ angerPercent }}
+    <h4>우울</h4> {{ depressionPercent }}
+    <h4>즐거움</h4> {{ pleasurePercent }}
+
+
+{% else %}
+<h1>로그인 전 Main 화면입니다.</h1>
+<a href="{% url 'login' %}">로그인하기</a>
+<a href="{% url 'signup' %}">회원가입하기</a>
+{% endif %}
