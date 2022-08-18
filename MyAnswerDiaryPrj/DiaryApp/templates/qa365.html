@@ -32,13 +32,37 @@
 
 
 {{todayYear}}년 {{todayMonth}}월 {{todayDay}}일 {{ user.first_name }}님의 생각을 기록해주세요.
-
-
 <div>
     <input type="text" id="answer" name="answer" placeholder="내용을 입력하세요." required>
     <input type = "hidden" id="que" name= "que" value="">
     <input type= "button" name="dd" value="submit" onclick=answer_form.submit();> 
 </div>
+    <!-- % if not today_answers % -->
+    <!-- 같은 날짜에 적힌 일기가 없습니다. -->
+    <!-- <div id="list"  style="display: none;"> -->
+    {% if today_answers %}
+        {% for today_answer in today_answers %}
+        <p>_________________________________________________________________</p>
+            {% for i in yearGap %}
+                <!-- {{answerDay.i}} -->
+                <!-- {{today_answer.id}}
+                {{forloop.counter}}
+                {% if forloop.counter == today_answer.id %}
+                    {% if i != 0 %}
+                        <p>{{ i }}년 전</p>
+                    {% else %}
+                        <p>올해의 일기</p>
+                    {% endif %}
+                {% endif %} -->
+            {% endfor %}
+        <p>{{ today_answer.created_at }}</p>
+        <p>{{ today_answer.answer }}</p>
+    <!-- </div> -->
+        </div>
+        {% endfor %}
+    {% endif %}
+
+
 
 
 </form>
@@ -46,6 +70,7 @@
 <script>
     const imp = document.getElementById('imp');
     const dre = document.getElementById('dre');
+    const list = document.getElementById('list');
     var choose ;
     function Btn_imp() {
 
@@ -93,7 +118,6 @@
     function Btn_val() {
         if (val.style.display !== 'none') {
             val.style.display = 'none';
-
         }
         else {
             val.style.display = 'block';

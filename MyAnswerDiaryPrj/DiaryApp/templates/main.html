@@ -16,14 +16,14 @@
 <a href="{% url 'mood_graph' %}">감정 통계</a>
 <br/><br/>
 <h2>{{ user.first_name }}님의 지난 {{ todayMonth }}월 {{ todayDay }}일 기록들입니다.</h2>
-    {% if not today_diarys %}
+    {% if not today_answers %}
     같은 날짜에 적힌 일기가 없습니다.
     {% else %}
-        {% for today_diary in today_diarys %}
+        {% for today_answer in today_answers %}
         <p>_________________________________________________________________</p>
-        <div style="cursor: pointer;" onclick="location.href='{% url 'detail' today_diary.id %}'">
+        <div style="cursor: pointer;" onclick="location.href='{% url 'detail' today_answer.id %}'">
             {% for i in yearGap %}
-                {% if forloop.counter == today_diary.id %}
+                {% if forloop.counter == today_answer.id %}
                     {% if i != 0 %}
                         <p>{{ i }}년 전</p>
                     {% else %}
@@ -31,9 +31,8 @@
                     {% endif %}
                 {% endif %}
             {% endfor %}
-        <p>{{ today_diary.created_at }}</p>
-        <h2>{{ today_diary.title }}</h2>
-        <p>{{ today_diary.content | truncatewords:25 }}</p>
+        <p>{{ today_answer.created_at }}</p>
+        <p>{{ today_answer.answer }}</p>
         </div>
         {% endfor %}
     {% endif %}
