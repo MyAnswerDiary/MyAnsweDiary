@@ -282,21 +282,22 @@ def qa365(request):
                 # print("day : ", answer.created_at.day)
                 answerYear.append(answer.created_at.year)
                 answerMonth.append(answer.created_at.month)
-                answerDay.append(answer.created_at.day)
-                yearGapCount += 1
-                if ((answer.created_at.month == todayMonth) and (answer.created_at.day == 18)):
-                    count += 1
-                for i in range(yearGapCount):
-                    yearGap.append(todayYear - answerYear[i])
-                print(question)
+                answerDay.append(answer.created_at.day - 1)
+                count += 1
+                # if ((answer.created_at.month == todayMonth) and (answer.created_at.day == 18)):
+                #     count += 1
+                # for i in range(yearGapCount):
+                    # yearGap.append(todayYear - answerYear[i])
+                # print(todayDay, "==", answer.created_at.day)
                 if ((request.user.is_authenticated) and (question == answer.question)):
                     for i in range(count):
                         today_answers = answers.order_by('-created_at').filter(
                             Q(created_at__month=todayMonth), 
-                            Q(created_at__day=18),
+                            Q(created_at__day=todayDay),
                             Q(question=answer.question),
-                            user=request.user
+                            user=request.user,
                         ).distinct()
+                        yearGap.append(todayYear - answerYear[i])
                         print("today_answers", today_answers);
                         return render(request, 'qa365.html', {'ques':ques , 'todayYear': todayYear, 'todayMonth' : todayMonth, 'todayDay' : todayDay, 'today_answers':today_answers, 'yearGap':yearGap, 'answerDay':answerDay})
             
