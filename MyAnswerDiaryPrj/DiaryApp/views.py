@@ -1,7 +1,6 @@
 from ast import keyword
 from distutils.log import Log
 from this import d
-from tkinter import Y
 from django.shortcuts import redirect, render, get_object_or_404
 from django.utils import timezone
 
