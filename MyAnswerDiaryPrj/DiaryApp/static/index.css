@@ -1,0 +1,34 @@
+body {
+    margin-top: 15%;
+    text-align: center;
+  }
+  
+  .main-btn {
+    width: 350px;
+    height: 47px;
+    background-color: #e8e8e8;
+    text-align: center;
+    line-height: 47px;
+    color: #e9a37f;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .logo {
+    width: 476px;
+    height: 72px;
+  }
+  
+  p {
+    color: #888888;
+    font-size: 18px;
+    margin-top: 15px;
+    margin-bottom: 55px;
+  }
+  
+  a {
+    text-decoration: none;
+  }

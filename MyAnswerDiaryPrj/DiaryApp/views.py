@@ -37,7 +37,7 @@ def main(request):
             ).distinct()
             yearGap.append(todayYear - diaryYear[i])
         return render(request, 'main.html', {'today_diarys':today_diarys, 'todayYear':todayYear, 'todayMonth':todayMonth, 'todayDay':todayDay, 'yearGap':yearGap})
-    return render(request, 'main.html')
+    return render(request, 'index.html')
 
 def mood_graph(request):
 

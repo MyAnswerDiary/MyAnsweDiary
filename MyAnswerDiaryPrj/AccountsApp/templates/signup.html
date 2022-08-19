@@ -1,15 +1,73 @@
-<form action="" method="POST">
-    {% csrf_token %}
-    <div>
-        <input type="text" id="user_id" name="user_id" placeholder="아이디를 입력하세요." required>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'signup.css' %}">
+    <title>Document</title>
+</head>
+
+
+<body>
+    <div class="mainbox">
+        <div class="header"></div>
+
+        <div class="menubar">
+            <a class="myanswerdiarylogo" href="{% url 'main' %}">
+                <img src="{% static 'MyAnswerDiary.png' %}" alt="" />
+            </a>
+            <ul>
+                <li><a class="diary" href="{% url 'login' %}">일기쓰기</a></li>
+                <li><a class="qna" href="{% url 'login' %}">365Q&A</a></li>
+                <li><a class="search" href="{% url 'login' %}">기록 검색</a></li>
+                <li><a class="graph" href="{% url 'login' %}">감정통계</a></li>
+            </ul>
+        </div>
+
+        <section class="form">
+            <form class="user" method="POST">
+                {% csrf_token %}
+                <div class="form-list">
+                    <label for='form-id'>아이디</label>
+                    <hr>
+                    <input id='form-id' name="form-id" type='text' required />
+                    <hr>
+                </div>
+
+                <div class="form-list">
+                    <label for='form-pw'>비밀번호</label>
+                    <hr>
+                    <input id="form-pw" name="form-pw" type="text" required />
+                    <hr>
+                </div>
+
+                <div class="form-list">
+                    <label for='form-repw'>비밀번호 확인</label>
+                    <hr>
+                    <input id="form-repw" name="form-repw" type="text" required />
+                    <hr>
+                </div>
+
+                <div class="form-list">
+                    <label for='form-name'>닉네임</label>
+                    <hr>
+                    <input id='form-name' name='form-name' type='text' required />
+                    <hr>
+                </div>
+
+                <div class="form-list">
+                    <input type="submit" class="form-submit" value="가입하기">
+                </div>
+            </form>
+        </section>
+
+        <div class="form-top">
+            <a class="login" href="{% url 'login' %}">LOGIN</span></a>
+            <a class="signup" href="{% url 'signup' %}">SIGNUP</span></a>
+        </div>
+
     </div>
-    <div>
-        <input type="text" id="user_nickname" name="user_nickname" placeholder="닉네임을 입력하세요." required>
-    </div>
-    <div>
-        <input type="password" id="user_pw" name="user_pw" placeholder="비밀번호를 입력하세요." required>
-        <br/>
-        <input type="password" id="user_pw_repeat" name="user_pw_repeat" placeholder="비밀번호 확인" required>
-    </div>
-    <input type="submit" value="회원가입">
-</form>
+</body>
