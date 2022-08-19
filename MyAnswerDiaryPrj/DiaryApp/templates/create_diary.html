@@ -16,14 +16,14 @@
       <div class="header"></div>
 
       <div class="menubar">
-        <a class="myanswerdiarylogo" href="index.html">
-          <img src="MyAnswerDiary.png" alt="" />
+        <a class="myanswerdiarylogo"  href="{% url 'main' %}">
+          <img src="/static/MyAnswerDiary.png" alt="" />
         </a>
         <ul>
-          <li><a class="diary" href="diary.html">일기쓰기</a></li>
-          <li><a class="qna" href="qna.html">365Q&A</a></li>
-          <li><a class="search" href="searchpage.html">기록 검색</a></li>
-          <li><a class="graph" href="graph.html">감정통계</a></li>
+          <li><a class="diary" href="{% url 'create_diary' %}">일기쓰기</a></li>
+          <li><a class="qna" href="{% url 'qa365' %}">365Q&A</a></li>
+          <li><a class="search" href="{% url 'searchpage' %}">기록 검색</a></li>
+          <li><a class="graph" href="{% url 'mood_graph' %}">감정통계</a></li>
         </ul>
       </div>
 

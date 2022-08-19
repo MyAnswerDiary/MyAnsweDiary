@@ -1,0 +1,187 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.mainbox {
+    width: 100%;
+    height: 1080px;
+    background: rgba(255, 255, 255, 1);
+    opacity: 1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    overflow: hidden;
+}
+
+.header {
+    width: 100%;
+    height: 80px;
+    background: url("../images/v247_1752.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    opacity: 1;
+    position: absolute;
+    top: 1px;
+    overflow: hidden;
+    background: rgba(90, 126, 100, 1);
+}
+
+.menubar {
+    width: 100%;
+    height: 35px;
+    margin-top: 130px;
+}
+
+.myanswerdiarylogo {
+    width: 200px;
+    height: 35px;
+    opacity: 1;
+    position: absolute;
+    margin-left: 200px;
+    overflow: hidden;
+}
+
+ul {
+    width: 100%;
+    height: 50px;
+    text-align: right;
+    top: 132px;
+}
+
+li {
+    display: inline-block;
+    font-size: 18px;
+    margin-right: 17px;
+    font-weight: bold;
+}
+
+.graph {
+    margin-right: 200px;
+}
+
+.qna,
+.diary,
+.search,
+.graph {
+    text-decoration: none;
+    color: #A2A2A2;
+}
+
+.wrap_ {
+    float: bottom;
+    width: 80%;
+}
+
+.wrap_1 {
+    margin-top: 50px;
+}
+
+.date {
+    color: rgba(0, 0, 0, 1);
+    position: absolute;
+    padding-left: 15%;
+    font-family: Inter;
+    font-weight: Medium;
+    font-size: 18px;
+    opacity: 1;
+    text-align: left;
+}
+
+.title {
+    width: 100%;
+    color: rgba(0, 0, 0, 1);
+    padding-left: 30%;
+    font-family: Inter;
+    font-weight: Medium;
+    font-size: 18px;
+    opacity: 1;
+    text-align: left;
+    display: inline-block;
+}
+
+hr {
+    width: 90%;
+    opacity: 1;
+    top: 813px;
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(206, 206, 206, 1);
+
+}
+
+label {
+    position: absolute;
+    margin-top: 10px;
+    margin-left: 8px;
+    font-size: 15px;
+    color: black;
+    text-decoration-line: none;
+}
+
+.write-diary {
+    width: 70%;
+    height: 550px;
+    border-radius: 23px;
+    margin: auto;
+    margin-top: 100px;
+    box-shadow: 1px 1px 10px 0.5px #dcdcdc;
+}
+
+.write-bar {
+    width: 100%;
+    height: 50px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.feeling {
+    width: 400px;
+    height: 50px;
+}
+
+.feeling-list {
+    width: 70px;
+    height: 30px;
+    background-color: #EF9E85;
+    color: #ffffff;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: Medium;
+    margin: 5px 0 10px 20px;
+    display: inline-block;
+    float: left;
+    padding-top: 5px;
+}
+
+.diary-title {
+    width: 93%;
+    height: 50px;
+    border: none;
+    border-bottom: 1px solid #a7a7a7;
+    margin: 0 35px 0 35px;
+    padding-top: 10px;
+    font-size: 20px;
+    font-weight: Medium;
+    color: black;
+}
+
+.diary-content {
+    width: 90%;
+    height: 400px;
+    border: none;
+    font-size: 15px;
+    margin: 0 35px 0 35px;
+    padding-top: 10px;
+}
+
+textarea::placeholder {
+    color: black;
+    font-weight: Medium;
+}

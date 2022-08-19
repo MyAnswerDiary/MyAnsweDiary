@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'main.css' %}">
+    <link rel="stylesheet" href="{% static 'index.css' %}" />
 </head>
 
 <body>
@@ -72,9 +73,25 @@
 {% endif %}
 
 {% else %}
-<h1>로그인 전 Main 화면입니다.</h1>
-<a href="{% url 'login' %}">로그인하기</a>
-<a href="{% url 'signup' %}">회원가입하기</a>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'index.css' %}" />
+    <title>MyAnswerDiary</title>
+</head>
+
+<body>
+    <img class="logo" src="{% static 'index_logo.svg' %}" />
+    <p>과거의 나에게서 현재 고민에 대한 힌트를 얻어보세요.</p>
+    <br>
+    <a href="{% url 'login' %}">
+        <div class="main-btn">LOGIN</div>
+    </a>
+    <a href="{% url 'signup' %}">
+        <div class="main-btn">SIGNUP</div>
+    </a>
+</body>
 {% endif %}
 
 </html>

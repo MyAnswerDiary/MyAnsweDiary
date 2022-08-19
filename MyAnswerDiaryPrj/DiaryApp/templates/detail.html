@@ -1,25 +1,82 @@
-<h1>{{ diary_detail.title }}</h1>
-<p>{{ diary_detail.created_at }}</p>
-<p>{{ diary_detail.content }}</p>
-<p>=======================================</p>
-{% if not detail_diarys %}
-같은 날짜에 적힌 일기가 없습니다.
-{% else %}
-    {% for detail_diary in detail_diarys %}
-    <p>_________________________________________________________________</p>
-    <div style="cursor: pointer;" onclick="location.href='{% url 'detail' detail_diary.id %}'">
-        {% for i in yearGap %}
-            {% if forloop.counter == detail_diary.id %}
-                {% if i != 0 %}
-                    <p>{{ i }}년 전</p>
-                {% else %}
-                    <p>올해의 일기</p>
-                {% endif %}
-            {% endif %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/diaryspecific.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="mainbox">
+      <div class="header"></div>
+      <div class="menubar">
+        <a class="myanswerdiarylogo"  href="{% url 'main' %}">
+          <img src="/static/MyAnswerDiary.png" alt="" />
+        </a>
+        <ul>
+            <li><a class="diary" href="{% url 'create_diary' %}">일기쓰기</a></li>
+            <li><a class="qna" href="{% url 'qa365' %}">365Q&A</a></li>
+            <li><a class="search" href="{% url 'searchpage' %}">기록 검색</a></li>
+            <li><a class="graph" href="{% url 'mood_graph' %}">감정통계</a></li>
+        </ul>
+      </div>
+      
+      <div class = "wrap1">
+        {% if not detail_diarys %}
+        같은 날짜에 적힌 일기가 없습니다.
+        {% else %}
+            {% for detail_diary in detail_diarys %}
+             <div class="wrap_" style="cursor: pointer;" onclick="location.href='{% url 'detail' detail_diary.id %}'">
+                <p class="date">{{ detail_diary.created_at|date:'Y.m.d' }}</p>
+                <p class="title">{{ detail_diary.title }}</p>
+                <hr>
+            </div>
         {% endfor %}
-    <p>{{ detail_diary.created_at }}</p>
-    <h2>{{ detail_diary.title }}</h2>
-    <p>{{ detail_diary.content | truncatewords:25 }}</p>
+        {% endif %}
+        </div>
     </div>
-    {% endfor %}
-{% endif %}
+
+      <section class="write-diary">
+        <div class="write-bar">
+
+            <div id="today">
+                <script>
+                    let today = new Date();
+
+                    let year = today.getFullYear();
+                    let month = today.getMonth() + 1;
+                    let day = today.getDate();
+                    document.write("{{ diary_detail.created_at }}");
+
+                    document.getElementById('today').style.width='200px';
+                    document.getElementById('today').style.height='50px';
+                    document.getElementById('today').style.margin='auto';
+                    document.getElementById('today').style.fontSize='18px';
+                    document.getElementById('today').style.fontWeight='Medium';
+                    document.getElementById('today').style.paddingTop='13px';
+                    document.getElementById('today').style.textAlign='center';
+                    document.getElementById('today').style.display='initial';
+                    document.getElementById('today').style.position='absolute';
+                    document.getElementById('today').style.left='900px';
+                    document.getElementById('today').style.right='200px';
+                </script>
+            </div>
+
+            <div class="feeling">
+                <ul>
+                    <li class="feeling-list">{{ diary_detail.hashTag }}</li>
+                </ul> 
+            </div>
+
+        </div>
+
+        <div class="diary-title">
+            <p>{{ diary_detail.title }}</p>
+        </div>
+
+        <div class="diary-content">
+            <p>{{ diary_detail.content | truncatewords:25 }}</p>
+        </div>
+
+    </section>
