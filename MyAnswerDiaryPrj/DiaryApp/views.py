@@ -188,7 +188,7 @@ def createDiary(request):
 def searchpage(request):
     return render(request, 'searchpage.html')
 
-def qa365(request):
+def qna(request):
 
     # 현재 날짜(년, 월, 일)
     todayYear = date.today().year
@@ -210,111 +210,76 @@ def qa365(request):
     answerDay = []
     yearGap = []
 
-    # for answer in answers:
-    #     print("user", answer.user)
-    #     print("오늘", todayMonth,"월", todayDay,"일")
-    #     print("month : ", answer.created_at.month)
-    #     print("day : ", answer.created_at.day)
-    #     answerYear.append(answer.created_at.year)
-    #     answerMonth.append(answer.created_at.month)
-    #     answerDay.append(answer.created_at.day)
-    #     if ((answer.created_at.month == todayMonth) and (answer.created_at.day == 18)):
-    #         count += 1
-                
-    #     #pk가 없어서 질문 문자열 값을 통해 question 객체 조회
-    #     question = Question365.objects.get(question = request.POST['que'])
-    #     print(question)
-    #     # if request.user.is_authenticated and question is not "":
-    #     for i in range(count):
-    #         today_answers = answers.order_by('-created_at').filter(
-    #             Q(created_at__month=todayMonth), 
-    #             Q(created_at__day=18),
-    #             Q(question=question),
-    #             user=request.user
-    #         ).distinct()
-    #         yearGap.append(todayYear - answerYear[i])
-    #         print("today_answers", today_answers);
-    
+    for answer in answers:
+        answerYear.append(answer.created_at.year)
+        answerMonth.append(answer.created_at.month)
+        answerDay.append(answer.created_at.day)
+        count += 1
+            
     if request.method == 'GET':
         print("get요청임")
-        # # 오늘 날짜에 작성된 카테고리 리스트
-        # answers = Answer365.objects.all()
-        # count = 0
-        # answerYear = []
-        # answerMonth = []
-        # answerDay = []
-        # yearGap = []
 
-        # for answer in answers:
-        #     print("user", answer.user)
-        #     print("오늘", todayMonth,"월", todayDay,"일")
-        #     print("month : ", answer.created_at.month)
-        #     print("day : ", answer.created_at.day)
-        #     answerYear.append(answer.created_at.year)
-        #     answerMonth.append(answer.created_at.month)
-        #     answerDay.append(answer.created_at.day)
-        #     if ((answer.created_at.month == todayMonth) and (answer.created_at.day == 18)):
-        #         count += 1
-                    
-        if request.user.is_authenticated:
-        #         for i in range(count):
-        #             today_answers = answers.order_by('-created_at').filter(
-        #                 Q(created_at__month=todayMonth), 
-        #                 Q(created_at__day=18),
-        #                 user=request.user
-        #             ).distinct()
-        #             yearGap.append(todayYear - answerYear[i])
-        #             print("today_answers", today_answers);
-            
-
-            
-            return render(request, 'qa365.html', {'ques':ques , 'todayYear': todayYear, 'todayMonth' : todayMonth, 'todayDay' : todayDay, 'yearGap':yearGap}) #'today_answers':today_answers, 
-        return render(request, 'main.html')
-        
+        for i in range(count):
+            print("todayDay",todayDay)
+            print("day",answerDay[i])
+            today_answers = answers.order_by('-created_at').filter(
+                Q(created_at__month=todayMonth), 
+                Q(created_at__day=todayDay),
+            ).distinct()      
+            print("today_answers", today_answers)
+            print("ques", ques)
+            print("answers", answers)
+            return render(request, 'qna.html', {'ques':ques , 'today_answers':today_answers, 'answers': answers, 'todayYear': todayYear, 'todayMonth' : todayMonth, 'todayDay' : todayDay, 'yearGap':yearGap}) #'today_answers':today_answers, 
     if request.method == 'POST':
         
-        if request.user.is_authenticated:
-            answer = Answer365()
-            answer.answer = request.POST['answer']
-            answer.created_at = timezone.now()
+        answer = Answer365()
+        answer.answer = request.POST['answer']
+        answer.created_at = timezone.now()
 
-            #pk가 없어서 질문 문자열 값을 통해 question 객체 조회
-            question = Question365.objects.get(question = request.POST['que'])
-            print(question)
-            #question을 fk로 저장
-            answer.question = question
-            answer.user = request.user
-            answer.save()
-            yearGapCount = 0;
-            for answer in answers:
-                # print("user", answer.user)
-                # print("오늘", todayMonth,"월", todayDay,"일")
-                # print("month : ", answer.created_at.month)
-                # print("day : ", answer.created_at.day)
-                answerYear.append(answer.created_at.year)
-                answerMonth.append(answer.created_at.month)
-                answerDay.append(answer.created_at.day - 1)
-                count += 1
-                # if ((answer.created_at.month == todayMonth) and (answer.created_at.day == 18)):
-                #     count += 1
-                # for i in range(yearGapCount):
-                    # yearGap.append(todayYear - answerYear[i])
-                # print(todayDay, "==", answer.created_at.day)
-                if ((request.user.is_authenticated) and (question == answer.question)):
-                    for i in range(count):
-                        today_answers = answers.order_by('-created_at').filter(
-                            Q(created_at__month=todayMonth), 
-                            Q(created_at__day=todayDay),
-                            Q(question=answer.question),
-                            user=request.user,
-                        ).distinct()
-                        yearGap.append(todayYear - answerYear[i])
-                        print("today_answers", today_answers);
-                        return render(request, 'qa365.html', {'ques':ques , 'todayYear': todayYear, 'todayMonth' : todayMonth, 'todayDay' : todayDay, 'today_answers':today_answers, 'yearGap':yearGap, 'answerDay':answerDay})
+        #pk가 없어서 질문 문자열 값을 통해 question 객체 조회
+        question = Question365.objects.get(question = request.POST['que'])
+        # print(question)
+        #question을 fk로 저장
+        answer.question = question
+        answer.save()
+        yearGapCount = 0;
+        for answer in answers:
+            answerYear.append(answer.created_at.year)
+            answerMonth.append(answer.created_at.month)
+            answerDay.append(answer.created_at.day + 1)
+            count += 1
+            print("answerMonth", answer.created_at.month, "==", "today m", todayMonth)
+            print("answer day", answer.created_at.day + 1, " == today d ", todayDay)
+            print("answer ques", answer.question, " == ques ", question)
             
+            if ((request.user.is_authenticated) and (question == answer.question)):
+                for i in range(count):
+                    today_answers = answers.order_by('-created_at').filter(
+                        Q(created_at__month=todayMonth), 
+                        Q(created_at__day=todayDay),
+                        Q(question=answer.question),
+                    ).distinct()
+                    yearGap.append(todayYear - answerYear[i])
+                    print("today_answers", today_answers);
+                    return render(request, 'qna.html', {'ques':ques , 'todayYear': todayYear, 'todayMonth' : todayMonth, 'todayDay' : todayDay, 'today_answers':today_answers, 'yearGap':yearGap, 'answerDay':answerDay})            
         else :
             return redirect('main') #로그인 되어있지 않으면 main으로 redirect
     
+
+
+def search(request):
+    if 'kw' in request.GET:
+        keyword = request.GET.get('kw')
+        diarys = Diary.objects.all().order_by('-created_at').filter(
+                Q(title__icontains=keyword) |
+                Q(content__icontains=keyword), # Q를 이용해 or 조건을 걸어줌
+                user=request.user # 로그인한 사용자의 글만 보이도로 and 조건
+            ).distinct() # or 검색시 중복된 글이 나타나는 것을 방지(중복 없애주는 함수)
+        return render(request, 'search.html', {'keyword':keyword , 'diarys':diarys})
+
+    else:
+        return render(request, 'search.html')
+
 
 
 def search(request):

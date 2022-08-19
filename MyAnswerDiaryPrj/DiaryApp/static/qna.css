@@ -1,5 +1,4 @@
 * {
-  font-family: Consolas, sans-serif;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -11,7 +10,7 @@ body {
 
 .mainbox {
   width: 100%;
-  height: 1080px;
+  height: max-content;
   background: rgba(255, 255, 255, 1);
   opacity: 1;
   position: absolute;
@@ -100,8 +99,7 @@ h1 {
   margin-bottom: 22px;
 }
 
-.btn-box {
-}
+
 
 .btn {
   border: none;
@@ -133,7 +131,7 @@ h1 {
   color: #db7f50;
 }
 
-#etc {
+#etcs {
   color: #e9a37f;
 }
 
@@ -143,8 +141,33 @@ h1 {
   font-size: 24px;
   margin-top: 100px;
 }
+#dre {
+  color: #5a7e64;
+  font-weight: bold;
+  font-size: 24px;
+  margin-top: 100px;
+}
+#rel {
+  color: #7f8563;
+  font-weight: bold;
+  font-size: 24px;
+  margin-top: 100px;
+}
+#val {
+  color: #db7f50;
+  font-weight: bold;
+  font-size: 24px;
+  margin-top: 100px;
+}
+#etc {
+  color: #e9a37f;
+  font-weight: bold;
+  font-size: 24px;
+  margin-top: 100px;
+}
 
-.que {
+
+.question-desc {
   text-align: center;
 }
 
@@ -178,6 +201,7 @@ h1 {
 }
 
 .search-cont {
+  width: fit-content;
   font-size: 18px;
   color: #525252;
 }
@@ -198,14 +222,14 @@ tr {
 
 .answer-box-table {
   width: 100%;
+  margin-bottom: 80px;
 }
 
 .answer {
   width: 100%;
   height: 132px;
-  padding: 10px 10px;
+  padding: 20px 20px;
   font-size: 21px;
-  color: #cecece;
   resize: none;
   border: none;
   outline: none;
@@ -217,7 +241,8 @@ tr {
   font-size: 21px;
 }
 
-.tr-date {
+#today-date {
+  padding-left: 20px;
 }
 
 .submit-btn {
@@ -226,4 +251,10 @@ tr {
   float: right;
   border: none;
   background-color: white;
+}
+
+#submit-btn {
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
