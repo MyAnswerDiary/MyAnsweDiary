@@ -1,46 +1,156 @@
 {% if user.is_authenticated %}
 
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/graph.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="mainbox">
+      <div class="header"></div>
+      <div class="menubar">
+        <a class="myanswerdiarylogo" href="index.html">
+          <img src="../static/MyAnswerDiary.png" alt="" />
+        </a>
 
-    <br/>
-    <a href="{% url 'logout' %}">로그아웃</a>
-    <a href="{% url 'searchpage' %}">기록 검색</a>
-    <a href="{% url 'create_diary' %}">일기쓰기</a>
-    <a href="{% url 'qa365' %}">365 Q&A</a>
-    <br/><br/>
-
+        <ul>
+          <li><a class="diary" href="{% url 'create_diary' %}">일기쓰기</a></li>
+          <li><a class="qna" href="{% url 'qa365' %}">365Q&A</a></li>
+          <li><a class="search" href="{% url 'searchpage' %}">기록 검색</a></li>
+          <li><a class="graph" href="{% url 'mood_graph' %}">감정통계</a></li>
+        </ul>
+      </div>
 
     <form action="" method="POST">
         {% csrf_token %}
     
         <!--시작 ~ 끝-->
-        <div>
-            <input type ="startYear" id = "startYear" name = "startYear">년
-            <input type ="startMonth" id = "startMonth" name = "startMonth">월
-            <input type ="startDay" id = "startDay" name = "startDay">일
-            ~
-            <input type ="endYear" id = "endYear" name = "endYear">년
-            <input type ="endMonth" id = "endMonth" name = "endMonth">월
-            <input type ="endDay" id = "endDay" name = "endDay">일
 
+      <section class="date">
+        <div class="date-list">
+          <label for="date-yr">년</label>
+          <hr />
+          <input type ="startYear" id = "startYear" name = "startYear"/>
+          <hr />
         </div>
-        <input type="submit" value="검색">
-    </form>
-    
 
-    <div>
-        
+        <div class="date-list">
+          <label for="date-mth">월</label>
+          <hr />
+          <input type ="startMonth" id = "startMonth" name = "startMonth"/>
+          <hr />
+        </div>
+
+        <div class="date-list">
+          <label for="date-date">일 ~</label>
+          <hr />
+          <input type ="startDay" id = "startDay" name = "startDay"/>
+          <hr />
+        </div>
+
+        <div class="date-list">
+          <label for="date-yr">년</label>
+          <hr />
+          <input type ="endYear" id = "endYear" name = "endYear"/>
+          <hr />
+        </div>
+
+        <div class="date-list">
+          <label for="date-mth">월</label>
+          <hr />
+          <input type ="endMonth" id = "endMonth" name = "endMonth"/>
+          <hr />
+        </div>
+
+        <div class="date-list">
+          <label for="date-date">일</label>
+          <hr />
+          <input type ="endDay" id = "endDay" name = "endDay"/>
+          <hr />
+        </div>
+
+        <div class="date-list">
+          <input class="date-search" type = "submit"></a>
+        </div>
+      </section>
+    </form>
+
+      <div class="text_feeling">
         {{startYear}}년 {{startMonth}}월 {{startDay}}일 ~ {{endYear}}년 {{endMonth}}월 {{endDay}}일 
        {{user.first_name}}님의 감정 통계입니다.
+      </div>
+      <br/>
+      <br/>
+
+      <div class="wrap">
+        <div class="container">
+          <div class="chart doughnut1">
+            <span class="feeling">기쁨</span>
+            <span class="center">{{ joyPercent }} %</span>
+          </div>
+
+          <div class="chart doughnut2">
+            <span class="feeling">분노</span>
+            <span class="center">{{ angerPercent }} %</span>
+          </div>
+
+          <div class="chart doughnut3">
+            <span class="feeling">우울</span>
+            <span class="center">{{ depressionPercent }} %</span>
+          </div>
+
+          <div class="chart doughnut4">
+            <span class="feeling">즐거움</span>
+            <span class="center">{{ pleasurePercent }} %</span>
+          </div>
+        </div>
+      </div>
 
     </div>
-    <h4>기쁨</h4> {{ joyPercent }}
-    <h4>분노</h4> {{ angerPercent }}
-    <h4>우울</h4> {{ depressionPercent }}
-    <h4>즐거움</h4> {{ pleasurePercent }}
-
-
+  </body>
+  
 {% else %}
 <h1>로그인 전 Main 화면입니다.</h1>
 <a href="{% url 'login' %}">로그인하기</a>
 <a href="{% url 'signup' %}">회원가입하기</a>
 {% endif %}
+</html>
+
+<script>
+const chart1 = document.querySelector('.doughnut1');
+const chart2 = document.querySelector('.doughnut2');
+const chart3 = document.querySelector('.doughnut3');
+const chart4 = document.querySelector('.doughnut4');
+
+const makeChart = (percent, classname, color) => {
+  let i = 1;
+  let chartFn = setInterval(function() {
+    if (i < percent) {
+      colorFn(i, classname, color);
+      i++;
+    } else {
+      clearInterval(chartFn);
+    }
+  }, 10);
+}
+
+const colorFn = (i, classname, color) => {
+  classname.style.background = "conic-gradient(" + color + " 0% " + i + "%, #dedede " + i + "% 100%)";
+}
+
+const replay = () => {
+  makeChart("{{ joyPercent }}", chart1, '#F6C8AE');
+  makeChart("{{ angerPercent }}", chart2, '#EF9E85');
+  makeChart("{{ depressionPercent }}", chart3, '#5A7E64');
+  makeChart("{{ pleasurePercent }}", chart4, '#A3B899');
+}
+
+makeChart("{{ joyPercent }}", chart1, '#F6C8AE');
+makeChart("{{ angerPercent }}", chart2, '#EF9E85');
+makeChart("{{ depressionPercent }}", chart3, '#5A7E64');
+makeChart("{{ pleasurePercent }}", chart4, '#A3B899');
+</script>

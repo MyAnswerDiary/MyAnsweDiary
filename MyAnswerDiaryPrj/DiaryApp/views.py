@@ -19,7 +19,7 @@ def main(request):
     diaryDay = []
     yearGap = []
     diarys = Diary.objects.all()
-    count = 0;
+    count = 0
     
     for diary in diarys:
         diaryYear.append(diary.created_at.year)
@@ -28,13 +28,17 @@ def main(request):
         count += 1  
     # return render(request, 'main.html', {'todayYear':todayYear, 'todayMonth':todayMonth, 'todayDay':todayDay})
 
+
     if request.user.is_authenticated:
         for i in range(count):
-            today_diarys = diarys.order_by('-created_at').filter(
+            today_diarys = diarys.filter(
                 Q(created_at__month=todayMonth), 
                 Q(created_at__day=todayDay),
                 user=request.user
-            ).distinct()
+            ).order_by('-created_at').distinct()
+
+            print(today_diarys) #여기서 잘 못 갖고 오는 듯
+
             yearGap.append(todayYear - diaryYear[i])
         return render(request, 'main.html', {'today_diarys':today_diarys, 'todayYear':todayYear, 'todayMonth':todayMonth, 'todayDay':todayDay, 'yearGap':yearGap})
     return render(request, 'main.html')
@@ -116,8 +120,10 @@ def mood_graph(request):
     # 특정 기간 입력 후 검색 결과       
     if(request.method == "POST") : 
 
+        print("post문")
         if request.user.is_authenticated :
             startYear = int(request.POST['startYear'])
+            print(request.POST['startYear'])
             startMonth = int(request.POST['startMonth'])
             startDay = int(request.POST['startDay'])
 
@@ -146,10 +152,10 @@ def mood_graph(request):
 
             # 퍼센트 구하기
             total = joy+anger+depression+pleasure
-            joyPercent = joy / total * 100
-            angerPercent = anger / total * 100
-            depressionPercent = depression / total * 100
-            pleasurePercent = pleasure / total * 100
+            joyPercent = round( joy / total * 100 , 1)
+            angerPercent = round(anger / total * 100, 1)
+            depressionPercent = round(depression / total * 100, 1)
+            pleasurePercent = round(pleasure / total * 100, 1)
 
         return render(request, 'mood_graph.html', {'joyPercent':joyPercent, 'angerPercent':angerPercent, 'depressionPercent':depressionPercent, 'pleasurePercent':pleasurePercent, 
         'startYear':startYear, 'startMonth':startMonth , 'startDay': startDay, 'endYear' : endYear, 'endMonth' : endMonth, 'endDay': endDay })
@@ -178,22 +184,88 @@ def searchpage(request):
     return render(request, 'searchpage.html')
 
 def qa365(request):
+
+    # 현재 날짜(년, 월, 일)
+    todayYear = date.today().year
+    todayMonth = datetime.date.today().month
+    todayDay = datetime.date.today().day
+
+    nowday = datetime.datetime.now().day # 현재 일(day)
+    if (nowday%5 == 0):
+        nownum = 5
+    else:
+        nownum = nowday % 5
+    ques = Question365.objects.filter(num=nownum)
+
+    # 오늘 날짜에 작성된 카테고리 리스트
+    answers = Answer365.objects.all()
+    count = 0
+    answerYear = []
+    answerMonth = []
+    answerDay = []
+    yearGap = []
+
+    # for answer in answers:
+    #     print("user", answer.user)
+    #     print("오늘", todayMonth,"월", todayDay,"일")
+    #     print("month : ", answer.created_at.month)
+    #     print("day : ", answer.created_at.day)
+    #     answerYear.append(answer.created_at.year)
+    #     answerMonth.append(answer.created_at.month)
+    #     answerDay.append(answer.created_at.day)
+    #     if ((answer.created_at.month == todayMonth) and (answer.created_at.day == 18)):
+    #         count += 1
+                
+    #     #pk가 없어서 질문 문자열 값을 통해 question 객체 조회
+    #     question = Question365.objects.get(question = request.POST['que'])
+    #     print(question)
+    #     # if request.user.is_authenticated and question is not "":
+    #     for i in range(count):
+    #         today_answers = answers.order_by('-created_at').filter(
+    #             Q(created_at__month=todayMonth), 
+    #             Q(created_at__day=18),
+    #             Q(question=question),
+    #             user=request.user
+    #         ).distinct()
+    #         yearGap.append(todayYear - answerYear[i])
+    #         print("today_answers", today_answers);
+    
     if request.method == 'GET':
         print("get요청임")
-        nowday = datetime.datetime.now().day # 현재 일(day)
-        if (nowday%5 == 0):
-            nownum = 5
-        else:
-            nownum = nowday % 5
-        ques = Question365.objects.filter(num=nownum)
+        # # 오늘 날짜에 작성된 카테고리 리스트
+        # answers = Answer365.objects.all()
+        # count = 0
+        # answerYear = []
+        # answerMonth = []
+        # answerDay = []
+        # yearGap = []
 
-        # 현재 날짜(년, 월, 일)
-        todayYear = date.today().year
-        todayMonth = datetime.date.today().month
-        todayDay = datetime.date.today().day
+        # for answer in answers:
+        #     print("user", answer.user)
+        #     print("오늘", todayMonth,"월", todayDay,"일")
+        #     print("month : ", answer.created_at.month)
+        #     print("day : ", answer.created_at.day)
+        #     answerYear.append(answer.created_at.year)
+        #     answerMonth.append(answer.created_at.month)
+        #     answerDay.append(answer.created_at.day)
+        #     if ((answer.created_at.month == todayMonth) and (answer.created_at.day == 18)):
+        #         count += 1
+                    
+        if request.user.is_authenticated:
+        #         for i in range(count):
+        #             today_answers = answers.order_by('-created_at').filter(
+        #                 Q(created_at__month=todayMonth), 
+        #                 Q(created_at__day=18),
+        #                 user=request.user
+        #             ).distinct()
+        #             yearGap.append(todayYear - answerYear[i])
+        #             print("today_answers", today_answers);
+            
 
-        return render(request, 'qa365.html', {'ques':ques , 'todayYear': todayYear, 'todayMonth' : todayMonth, 'todayDay' : todayDay})
-
+            
+            return render(request, 'qa365.html', {'ques':ques , 'todayYear': todayYear, 'todayMonth' : todayMonth, 'todayDay' : todayDay, 'yearGap':yearGap}) #'today_answers':today_answers, 
+        return render(request, 'main.html')
+        
     if request.method == 'POST':
         
         if request.user.is_authenticated:
@@ -203,17 +275,42 @@ def qa365(request):
 
             #pk가 없어서 질문 문자열 값을 통해 question 객체 조회
             question = Question365.objects.get(question = request.POST['que'])
-
+            print(question)
             #question을 fk로 저장
             answer.question = question
-
+            answer.user = request.user
             answer.save()
-
-            return redirect('main') #일단 main으로 가도록 해놨습니다
+            yearGapCount = 0;
+            for answer in answers:
+                # print("user", answer.user)
+                # print("오늘", todayMonth,"월", todayDay,"일")
+                # print("month : ", answer.created_at.month)
+                # print("day : ", answer.created_at.day)
+                answerYear.append(answer.created_at.year)
+                answerMonth.append(answer.created_at.month)
+                answerDay.append(answer.created_at.day - 1)
+                count += 1
+                # if ((answer.created_at.month == todayMonth) and (answer.created_at.day == 18)):
+                #     count += 1
+                # for i in range(yearGapCount):
+                    # yearGap.append(todayYear - answerYear[i])
+                # print(todayDay, "==", answer.created_at.day)
+                if ((request.user.is_authenticated) and (question == answer.question)):
+                    for i in range(count):
+                        today_answers = answers.order_by('-created_at').filter(
+                            Q(created_at__month=todayMonth), 
+                            Q(created_at__day=todayDay),
+                            Q(question=answer.question),
+                            user=request.user,
+                        ).distinct()
+                        yearGap.append(todayYear - answerYear[i])
+                        print("today_answers", today_answers);
+                        return render(request, 'qa365.html', {'ques':ques , 'todayYear': todayYear, 'todayMonth' : todayMonth, 'todayDay' : todayDay, 'today_answers':today_answers, 'yearGap':yearGap, 'answerDay':answerDay})
             
         else :
             return redirect('main') #로그인 되어있지 않으면 main으로 redirect
     
+
 
 def search(request):
     if 'kw' in request.GET:
