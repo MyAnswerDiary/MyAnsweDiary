@@ -28,18 +28,23 @@ def main(request):
         count += 1  
     # return render(request, 'main.html', {'todayYear':todayYear, 'todayMonth':todayMonth, 'todayDay':todayDay})
 
-
     if request.user.is_authenticated:
-        for i in range(count):
-            today_diarys = diarys.order_by('-created_at').filter(
+        today_diarys = diarys.order_by('-created_at').filter(
                 Q(created_at__month=todayMonth), 
                 Q(created_at__day=todayDay),
                 user=request.user
             ).distinct()
-
-            print(today_diarys) #여기서 잘 못 갖고 오는 듯
-
+        print(today_diarys)
+        
+        for i in range(count):
+            today_diarys = diarys.filter(
+                Q(created_at__month=todayMonth), 
+                Q(created_at__day=todayDay),
+                user=request.user
+            ).order_by('-created_at').distinct()
             yearGap.append(todayYear - diaryYear[i])
+            
+        print(today_diarys)
         return render(request, 'main.html', {'today_diarys':today_diarys, 'todayYear':todayYear, 'todayMonth':todayMonth, 'todayDay':todayDay, 'yearGap':yearGap})
     return render(request, 'main.html')
 
@@ -108,10 +113,10 @@ def mood_graph(request):
 
             # 퍼센트 구하기
             total = joy+anger+depression+pleasure
-            joyPercent = joy / total * 100
-            angerPercent = anger / total * 100
-            depressionPercent = depression / total * 100
-            pleasurePercent = pleasure / total * 100
+            joyPercent = round(joy / total * 100 , 1)
+            angerPercent = round(anger / total * 100, 1)
+            depressionPercent = round(depression / total * 100, 1)
+            pleasurePercent = round(pleasure / total * 100, 1)
 
 
         return render(request, 'mood_graph.html', {'joyPercent':joyPercent, 'angerPercent':angerPercent, 'depressionPercent':depressionPercent, 'pleasurePercent':pleasurePercent, 
