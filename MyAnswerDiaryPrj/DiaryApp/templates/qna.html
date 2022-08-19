@@ -7,28 +7,47 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href={% static './qna.css' %}>
-    <!-- <script src="js/jquery-3.3.1.min.js"></script> -->
     <title>Q&A</title>
 </head>
 
 <body>
     <!-- que를 form으로 넘겨서 저장하기 위해 여기서부터 form 태그를 넣음-->
-    <form action="{% url 'qna' %}" method="POST" name="answer_form">
-        {% csrf_token %}
-        <h1>365 Q&A 페이지</h1>
+    <div class="mainbox">
+        <div class="header"></div>
 
-        <p>카테고리를 선택하면 관련 질문이 랜덤하게 나옵니다.</p>
-
-        <div>
-            <input type='button' value='자기계발' id='btn1' onclick='Btn_imp()' />
-            <input type='button' value='꿈' id='btn2' onclick='Btn_dre()' />
-            <input type='button' value='인간관계' id='btn3' onclick='Btn_rel()' />
-            <input type='button' value='가치관' id='btn4' onclick='Btn_val()' />
-            <input type='button' value='기타' id='btn5' onclick='Btn_etc()' />
+        <div class="menubar">
+            <a class="myanswerdiarylogo" href="index.html">
+                <img src="{% static './MyAnswerDiary.png'%}" alt="" />
+            </a>
+            <ul>
+                <li><a class="diary" href="{% url 'create_diary' %}">일기쓰기</a></li>
+                <li><a class="qna" href="{% url 'qna' %}">365Q&A</a></li>
+                <li><a class="search" href="{% url 'searchpage' %}">기록 검색</a></li>
+                <li><a class="graph" href="{% url 'mood_graph' %}">감정통계</a></li>
+            </ul>
         </div>
 
+        <div class="qna-box">
+
+            <h1>365 Q&A</h1>
+            <p id="desc">카테고리를 선택하면 관련 질문이 랜덤하게 나옵니다.</p>
+
+            <form action="{% url 'qna' %}" method="POST" name="answer_form">
+                {% csrf_token %}
+                <div class="btn-box">
+                    <input class="btn" id="myself" type='button' value='자기 계발' id='btn1' onclick='Btn_imp()' />
+                    <span class="line"></span>
+                    <input class="btn" id="dream" type='button' value='꿈' id='btn2' onclick='Btn_dre()' />
+                    <span class="line"></span>
+                    <input class="btn" id="freind" type='button' value='인간관계' id='btn3' onclick='Btn_rel()' />
+                    <span class="line"></span>
+                    <input class="btn" id="think" type='button' value='가치관' id='btn4' onclick='Btn_val()' />
+                    <span class="line"></span>
+                    <input class="btn" id="etcs" type='button' value='기타' id='btn5' onclick='Btn_etc()' />
+                </div>
+        </div>
         {% for que in ques %}
-        <div>
+        <div class="question-desc">
             {% if que.category == '자기계발' %}
             <p id="imp" style="display: none;">{{ que.question }}</p>
             {% elif que.category == '꿈' %}
@@ -44,120 +63,109 @@
         </div>
         {% endfor %}
 
-
         <div class="search-result">
-                        <div class="search-result-item" id = "imp-list" style="cursor: pointer; display:none; ">
-                            {% for que in ques %}
-                            {% if que.category == '자기계발' %}
-                                {% for today_answer in today_answers %}
-                                {% if today_answer.question|truncatewords:5 == que.question|truncatewords:5 %}
-                                <p class="search-date">{{todayYear}}.{{todayMonth}}.{{todayDay}}</p>
-                                <div class="content">
-                                    <span class="search-title">{{que.question}}</span>
-                                    <p class="search-cont">{{today_answer.answer}}</p>
-                                </div>
-                                {% endif %}
-                                {% endfor %}
-                                {% endif %}
-                                {% endfor %}
-                        </div>
-                        <div class="search-result-item" id="dre-list" style="cursor: pointer; display: none; ">
-                            {% for que in ques %}
-                                    {% if que.category == '꿈' %}
-                            {% for today_answer in today_answers %}
-                            {% if today_answer.question|truncatewords:5 == que.question|truncatewords:5 %}
-                            <p class="search-date">{{todayYear}}.{{todayMonth}}.{{todayDay}}</p>
-                            <div class="content">
-                                <span class="search-title">{{que.question}}</span>
-                                <p class="search-cont">{{today_answer.answer}}</p>
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div class="search-result-item" id="rel-list" style="cursor: pointer; display: none;">
-                            {% for que in ques %}
-                                    {% if que.category == '인간관계' %}
-                            {% for today_answer in today_answers %}
-                            {% if today_answer.question|truncatewords:5 == que.question|truncatewords:5 %}
-                            <p class="search-date">{{todayYear}}.{{todayMonth}}.{{todayDay}}</p>
-                            <div class="content">
-                                <span class="search-title">{{que.question}}</span>
-                                <p class="search-cont">{{today_answer.answer}}</p>
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div class="search-result-item" id="val-list" style="cursor: pointer; display: none;" >
-                            {% for que in ques %}
-                                    {% if que.category == '가치관' %}
-                            {% for today_answer in today_answers %}
-                            {% if today_answer.question|truncatewords:5 == que.question|truncatewords:5 %}
-                            <p class="search-date">{{todayYear}}.{{todayMonth}}.{{todayDay}}</p>
-                            <div class="content">
-                                <span class="search-title">{{que.question}}</span>
-                                <p class="search-cont">{{today_answer.answer}}</p>
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div class="search-result-item" id="etc-list" style="cursor: pointer; display: none;">
-                            {% for que in ques %}
-                                    {% if que.category == '기타' %}
-                            {% for today_answer in today_answers %}
-                            {% if today_answer.question|truncatewords:5 == que.question|truncatewords:5 %}
-                            <p class="search-date">{{todayYear}}.{{todayMonth}}.{{todayDay}}</p>
-                            <div class="content">
-                                <span class="search-title">{{que.question}}</span>
-                                <p class="search-cont">{{today_answer.answer}}</p>
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-                            {% endif %}
-                            {% endfor %}
-                        </div>
+            <div class="search-result-item" id="imp-list" style="cursor: pointer; display:none; ">
+                {% for que in ques %}
+                {% if que.category == '자기계발' %}
+                {% for today_answer in today_answers %}
+                {% if today_answer.question|truncatewords:5 == que.question|truncatewords:5 %}
+                <p class="search-date">{{todayYear}}.{{todayMonth}}.{{todayDay}}</p>
+                <div class="content">
+                    <span class="search-title">{{que.question}}</span>
+                    <p class="search-cont">{{today_answer.answer}}</p>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="search-result-item" id="dre-list" style="cursor: pointer; display: none; ">
+                {% for que in ques %}
+                {% if que.category == '꿈' %}
+                {% for today_answer in today_answers %}
+                {% if today_answer.question|truncatewords:5 == que.question|truncatewords:5 %}
+                <p class="search-date">{{todayYear}}.{{todayMonth}}.{{todayDay}}</p>
+                <div class="content">
+                    <span class="search-title">{{que.question}}</span>
+                    <p class="search-cont">{{today_answer.answer}}</p>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="search-result-item" id="rel-list" style="cursor: pointer; display: none;">
+                {% for que in ques %}
+                {% if que.category == '인간관계' %}
+                {% for today_answer in today_answers %}
+                {% if today_answer.question|truncatewords:5 == que.question|truncatewords:5 %}
+                <p class="search-date">{{todayYear}}.{{todayMonth}}.{{todayDay}}</p>
+                <div class="content">
+                    <span class="search-title">{{que.question}}</span>
+                    <p class="search-cont">{{today_answer.answer}}</p>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="search-result-item" id="val-list" style="cursor: pointer; display: none;">
+                {% for que in ques %}
+                {% if que.category == '가치관' %}
+                {% for today_answer in today_answers %}
+                {% if today_answer.question|truncatewords:5 == que.question|truncatewords:5 %}
+                <p class="search-date">{{todayYear}}.{{todayMonth}}.{{todayDay}}</p>
+                <div class="content">
+                    <span class="search-title">{{que.question}}</span>
+                    <p class="search-cont">{{today_answer.answer}}</p>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="search-result-item" id="etc-list" style="cursor: pointer; display: none;">
+                {% for que in ques %}
+                {% if que.category == '기타' %}
+                {% for today_answer in today_answers %}
+                {% if today_answer.question|truncatewords:5 == que.question|truncatewords:5 %}
+                <p class="search-date">{{todayYear}}.{{todayMonth}}.{{todayDay}}</p>
+                <div class="content">
+                    <span class="search-title">{{que.question}}</span>
+                    <p class="search-cont">{{today_answer.answer}}</p>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+            </div>
         </div>
 
-        {{todayYear}}년 {{todayMonth}}월 {{todayDay}}일 {{ user.first_name }}님의 생각을 기록해주세요.
-        <div>
-            <input type="text" id="answer" name="answer" placeholder="내용을 입력하세요." required>
-            <input type="hidden" id="que" name="que" value="">
-            <input type="button" name="dd" value="submit" onclick=answer_form.submit();>
+
+        <div class="answer-box">
+            <table class="answer-box-table">
+                <colgroup>
+                    <col width="93%" />
+                    <col width="7%" />
+                </colgroup>
+                <tr>
+                    <td colspan="2" span style="color:white">
+                        <textarea class="answer" type="text" id="answer" name="answer"
+                            placeholder="{{todayYear}}년 {{todayMonth}}월 {{todayDay}}일 {{ user.first_name }}님의 생각을 기록해주세요." required></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="today-date"><span class="today-date">{{todayYear}}.{{todayMonth}}.{{todayDay}}</span></td>
+                    <td id="submit-btn"><input class="submit-btn" type="button" name="dd" value="등록"
+                            onclick=answer_form.submit();>
+                    </td>
+                </tr>
+            </table>
         </div>
-        <!-- % if not today_answers % -->
-        <!-- 같은 날짜에 적힌 일기가 없습니다. -->
-        <!-- <div id="list"  style="display: none;"> -->
-        <!-- {% if today_answers %}
-        {% for today_answer in today_answers %}
-        <p>_________________________________________________________________</p>
-            {% for i in yearGap %} -->
-        <!-- {{answerDay.i}} -->
-        <!-- {{today_answer.id}}
-                {{forloop.counter}}
-                {% if forloop.counter == today_answer.id %}
-                    {% if i != 0 %}
-                        <p>{{ i }}년 전</p>
-                    {% else %}
-                        <p>올해의 일기</p>
-                    {% endif %}
-                {% endif %} -->
-        <!-- {% endfor %}
-        <p>{{ today_answer.created_at.year }}년 {{ today_answer.created_at.month }}월 {{ today_answer.created_at.day }}일 </p>
-        <p>{{ today_answer.answer }}</p> -->
-        <!-- </div> -->
-        <!-- </div>
-        {% endfor %}
-    {% endif %} -->
+        <input type="hidden" id="que" name="que" value="">
+        </form>
 
-
-
-
-    </form>
+    </div>
 
     <script>
         const imp = document.getElementById('imp');
@@ -280,6 +288,7 @@
         }
 
     </script>
+    
 </body>
 
 </html>
