@@ -54,33 +54,22 @@
 
         {% if not today_diarys %}
         같은 날짜에 적힌 일기가 없습니다.
-
         {% else %}
 
+        <div class = "wrap1">
         <!-- 여기는 존재하는 일기가 있는 경우-->
-        {% for today_diary in today_diarys %}
-        
-        <div class="wrap1" style="cursor: pointer;" onclick="location.href='{% url 'detail' today_answer.id %}'">
-            {% for i in yearGap %}
-            {% if forloop.counter == today_diary.id %}
-            {% if i != 0 %}
-            <p>{{ i }}년 전</p>
-            {% else %}
-            <p>올해의 일기</p>
-            {% endif %}
-            {% endif %}
-            {% endfor %}
-
-            <div class="wrap">
-                <p class="date">{{ today_diary.created_at }}</p>
-                <p class="title">
-                <p>{{ today_diary.title }}</p>
-                </p>
+            {% for today_diary in today_diarys %}
+             <div class="wrap" style="cursor: pointer;" onclick="location.href='{% url 'detail' today_diary.id %}'">
+                <p class="date">{{ today_diary.created_at|date:'Y.m.d' }}</p>
+                <p class="title">{{ today_diary.title }}</p>
                 <p class="contents">{{ today_diary.content }}</p>
+                <hr>
             </div>
-        </div>
         {% endfor %}
+        </div>
+    </div>
 
+    
 </body>
 {% endif %}
 

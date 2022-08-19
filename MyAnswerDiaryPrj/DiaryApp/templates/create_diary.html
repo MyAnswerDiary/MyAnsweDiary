@@ -1,35 +1,121 @@
-<form action="" method="POST">
-    {% csrf_token %}
-    <!--현재 날짜-->
-    <div>
-        <script>
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
-        var yyyy = today.getFullYear();
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../static/diary.css" />
+    <title>Document</title>
+  </head>
+  <body>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+
+    <div class="mainbox">
+      <div class="header"></div>
+
+      <div class="menubar">
+        <a class="myanswerdiarylogo" href="index.html">
+          <img src="MyAnswerDiary.png" alt="" />
+        </a>
+        <ul>
+          <li><a class="diary" href="diary.html">일기쓰기</a></li>
+          <li><a class="qna" href="qna.html">365Q&A</a></li>
+          <li><a class="search" href="searchpage.html">기록 검색</a></li>
+          <li><a class="graph" href="graph.html">감정통계</a></li>
+        </ul>
+      </div>
+
     
-        today = yyyy+ '.' + mm + '.' + dd ;
-        document.write(today)
-        </script>
-    </div>
+      <section class="write-diary">
+        <div class="write-bar">
+          <div class="write-complete"> <input type="submit" id="submit-button" value="등록"> </div>
 
-    <!--해시태그-->
-    <div>
-        <label></label><input type = "radio" name = "hashtag" value = "기쁨">기쁨</label>
-        <label></label><input type = "radio" name = "hashtag" value = "분노">분노</label>
-        <label></label><input type = "radio" name = "hashtag" value = "우울">우울</label>
-        <label></label><input type = "radio" name = "hashtag" value = "즐거움">즐거움</label>
-    </div>
+          <div id="today">
+            <script>
+              let today = new Date();
 
-    <!--제목-->
-    <div>
-        <input type="text" id="title" name="title" placeholder="제목" required>
-    </div>
+              let year = today.getFullYear();
+              let month = today.getMonth() + 1;
+              let day = today.getDate();
+              document.write(year + "년 " + month + "월 " + day + "일 ");
 
-    <!--내용-->
-    <div>
-        <input type="text" id="content" name="content" placeholder="내용을 입력하세요." required>
-    </div>
+              document.getElementById("today").style.width = "200px";
+              document.getElementById("today").style.height = "50px";
+              document.getElementById("today").style.margin = "auto";
+              document.getElementById("today").style.fontSize = "18px";
+              document.getElementById("today").style.fontWeight = "Medium";
+              document.getElementById("today").style.paddingTop = "13px";
+              document.getElementById("today").style.textAlign = "center";
+              document.getElementById("today").style.display = "initial";
+              document.getElementById("today").style.position = "absolute";
+              document.getElementById("today").style.left = "900px";
+            </script>
+          </div>
 
-    <input type="submit" value="등록">
+          <div class="feeling">
+              <div class="radio_button">
+                <input id="radio-1" type="radio" name="feelinglist" value="기쁨">
+                <label for="radio-1">기쁨</label>
+              </div>
+              <div class="radio_button">
+                <input id="radio-2" type="radio" name="feelinglist" value="분노">
+                <label for="radio-2">분노</label>
+              </div>
+              <div class="radio_button">
+                <input id="radio-3" type="radio" name="feelinglist" value="우울">
+                <label for="radio-3">우울</label>
+              </div>
+              <div class="radio_button">
+                <input id="radio-4" type="radio" name="feelinglist" value="즐거움">
+                <label for="radio-4">즐거움</label>
+              </div>
+            </div>
+        </div>
+
+        <div>
+          <textarea
+            class="diary-title"
+            name="title"
+            id="utitle"
+            placeholder="제목"
+          ></textarea>
+        </div>
+
+        <div>
+          <textarea
+            class="diary-content"
+            name="content"
+            id="empty"
+            placeholder="일기를 작성해 주세요"
+          ></textarea>
+        </div>
+      </section>
+    </div>
 </form>
+
+    <script>
+      var feelingList=document.getElementsByClassName("feelingList");
+      function handleClick(event){
+        console.log(event.target);
+        console.log(event.target.classList);
+
+        if(event.target.classList[1]==="clicked"){
+          event.target.classList.remove("clicked");
+        }else{
+          for(var i=0; i<feelingList.length; i++){
+            feelingList[i].classList.remove("clicked");
+          }
+          event.target.classList.add("clicked");
+        }
+      }
+      function init(){
+        for (var i=0; i<feelingList.length; i++){
+          feelingList[i].addEventListener("click",handleClick);
+        }
+      }
+      init();
+    </script>
+  </body>
+</html>

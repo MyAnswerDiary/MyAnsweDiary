@@ -31,11 +31,11 @@ def main(request):
 
     if request.user.is_authenticated:
         for i in range(count):
-            today_diarys = diarys.filter(
+            today_diarys = diarys.order_by('-created_at').filter(
                 Q(created_at__month=todayMonth), 
                 Q(created_at__day=todayDay),
                 user=request.user
-            ).order_by('-created_at').distinct()
+            ).distinct()
 
             print(today_diarys) #여기서 잘 못 갖고 오는 듯
 
@@ -168,7 +168,7 @@ def createDiary(request):
             diary = Diary()
             diary.title = request.POST['title']
             diary.content = request.POST['content']
-            diary.hashTag = request.POST['hashtag']
+            diary.hashTag = request.POST['feelinglist']
             diary.user = request.user
             diary.created_at = timezone.now()
             diary.save()
