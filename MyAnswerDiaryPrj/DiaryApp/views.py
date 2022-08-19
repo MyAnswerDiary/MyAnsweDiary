@@ -177,7 +177,7 @@ def createDiary(request):
 def searchpage(request):
     return render(request, 'searchpage.html')
 
-def qa365(request):
+def qna(request):
     if request.method == 'GET':
         print("get요청임")
         nowday = datetime.datetime.now().day # 현재 일(day)
@@ -192,7 +192,7 @@ def qa365(request):
         todayMonth = datetime.date.today().month
         todayDay = datetime.date.today().day
 
-        return render(request, 'qa365.html', {'ques':ques , 'todayYear': todayYear, 'todayMonth' : todayMonth, 'todayDay' : todayDay})
+        return render(request, 'qna.html', {'ques':ques , 'todayYear': todayYear, 'todayMonth' : todayMonth, 'todayDay' : todayDay})
 
     if request.method == 'POST':
         

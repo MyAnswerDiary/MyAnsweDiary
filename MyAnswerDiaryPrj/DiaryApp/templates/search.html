@@ -1,20 +1,65 @@
-<p>"{{ keyword }}" 검색 결과</p>
-<form action="{% url 'search' %}" method="GET">
-    {% csrf_token %}
-    <button type="submit">검색</button>
-    <input type="search" placeholder="검색어를 입력하세요" name="kw">
-</form>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href={% static './search.css' %}>
+    <!-- <script src="js/jquery-3.3.1.min.js"></script> -->
+    <title>search</title>
+</head>
+
+<body>
+
+
+    <div class="mainbox">
+        <div class="header"></div>
+
+        <div class="menubar">
+            <a class="myanswerdiarylogo" href="index.html">
+                <img src="MyAnswerDiary.png" alt="" />
+            </a>
+            <ul>
+                <li><a class="diary" href="diary.html">일기쓰기</a></li>
+                <li><a class="qna" href="qna.html">365Q&A</a></li>
+                <li><a class="search" href="searchpage.html">기록 검색</a></li>
+                <li><a class="graph" href="graph.html">감정통계</a></li>
+            </ul>
+        </div>
+    
+{% comment %} <p>"{{ keyword }}" 검색 결과</p> {% endcomment %}
+
+
+<div class="search-box">
+    <form action="{% url 'search' %}" method="GET">
+        {% csrf_token %}
+        <button class="search-icon" type="submit"></button>
+        <input class="search-bar" type="search" value="{{ keyword }}" name="kw">
+    </form>
+</div>
 
 {% if not diarys %}
-검색 결과가 없습니다.
+<div class="search-result">
+        검색결과가 없습니다.
+<div>
 {% else %}
+
 {% for diary in diarys %}
-<div style="cursor: pointer;" onclick="location.href='{% url 'detail' diary.id %}'">
-<!-- <p>{{ yearGap }}년 전</p> -->
-<p>_________________________________________________________________</p>
-<p>{{ diary.created_at }}</p>
-<h2>{{ diary.title }}</h2>
-<p>{{ diary.content | truncatewords:25 }}</p>
-</div>
+<div class="search-result">
+    <div class="search-result-item" style="cursor: pointer;" onclick="location.href='{% url 'detail' diary.id %}'">
+        <p class="search-date">{{diary.id }} {{ year }}.{{ month }}.{{ day }}</p>
+        <div class="content">
+            <span class="search-title">{{ diary.title }}</span>
+            <p class="search-cont">{{ diary.content | truncatewords:25 }}</p>
+        </div>
+    </div>
+    <div>
 {% endfor %}
 {% endif %}
+
+</div>
+</body>
+
+<html>
