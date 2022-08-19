@@ -60,10 +60,11 @@
         <div class = "wrap1">
         <!-- 여기는 존재하는 일기가 있는 경우-->
             {% for today_diary in today_diarys %}
+            
              <div class="wrap" style="cursor: pointer;" onclick=" location.href='{% url 'detail' today_diary.id %}' ">
                 <p class="date">{{ today_diary.created_at|date:'Y.m.d' }}</p>
                 <p class="title">{{ today_diary.title }}</p>
-                <p class="contents">{{ today_diary.content }}</p>
+                <p class="contents">{{ today_diary.content }}</p>z
                 <hr>
             </div>
         {% endfor %}

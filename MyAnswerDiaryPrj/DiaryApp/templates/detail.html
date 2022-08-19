@@ -22,7 +22,7 @@
         </ul>
       </div>
       
-      <div class = "wrap1">
+      <div class = "wrap_1">
         {% if not detail_diarys %}
         같은 날짜에 적힌 일기가 없습니다.
         {% else %}
@@ -47,8 +47,7 @@
                     let year = today.getFullYear();
                     let month = today.getMonth() + 1;
                     let day = today.getDate();
-                    document.write("{{ diary_detail.created_at }}");
-
+                    document.write("{{ diary_detail.created_at|date:'Y.m.d' }}");
                     document.getElementById('today').style.width='200px';
                     document.getElementById('today').style.height='50px';
                     document.getElementById('today').style.margin='auto';
@@ -68,7 +67,6 @@
                     <li class="feeling-list">{{ diary_detail.hashTag }}</li>
                 </ul> 
             </div>
-
         </div>
 
         <div class="diary-title">
@@ -76,7 +74,7 @@
         </div>
 
         <div class="diary-content">
-            <p>{{ diary_detail.content | truncatewords:25 }}</p>
+            <p>{{ diary_detail.content }}</p>
         </div>
 
     </section>
