@@ -14,7 +14,7 @@ urlpatterns = [
     path('create_diary/',diary_views.createDiary, name='create_diary'),
     path('searchpage/', views.searchpage, name='searchpage'),
     path('search/', views.search, name='search'),
-    path('qa365/', views.qa365, name='qa365'),
+    path('qna/', views.qna, name='qna'),
     path('mood_graph/', views.mood_graph, name='mood_graph'),
     path('detail/<int:diary_id>/', views.detail, name='detail'),
 ]
